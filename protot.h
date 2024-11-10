@@ -93,6 +93,7 @@ int Process_TER(BUFFER Buffer, CHAIN **Chain, int *ChainNumber);
 int Process_TURN(BUFFER Buffer, CHAIN **Chain, int *ChainNumber, COMMAND *Cmd);
 int ReadDSSP(CHAIN **Chain, DSSP **Dssp, COMMAND *Cmd);
 int ReadPDBFile(CHAIN **Chain, int *NChain, COMMAND *Cmd);
+int ReadCIFFile(CHAIN **Chain, int *NChain, COMMAND *Cmd);
 int ReadPhiPsiMap(char *MapFile, float ***PhiPsiMap, COMMAND *Cmd);
 int Replace(char *String, char From, char To);
 int ResInSecondStr(int ResNumb, int (*Bound)[2], int N, int *StrNumb);

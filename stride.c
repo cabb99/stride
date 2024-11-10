@@ -4,7 +4,6 @@
 
 int main(int argc, char **argv)
 {
-
   CHAIN **Chain;
   HBOND **HBond;
   COMMAND *Cmd;
@@ -22,8 +21,17 @@ int main(int argc, char **argv)
 
   ProcessStrideOptions(argv,argc,Cmd);
 
-  if( !ReadPDBFile(Chain,&NChain,Cmd) || !NChain )
-    die("Error reading PDB file %s\n",Cmd->InputFile);
+  char *filename = strtok(Cmd->InputFile, " \t\n");
+  const char *ext = strrchr(filename, '.');
+  if (ext && strcasecmp(ext, ".pdb") == 0) {
+      if (!ReadPDBFile(Chain, &NChain, Cmd) || !NChain)
+          die("Error reading PDB file %s\n", Cmd->InputFile);
+  } else if (ext && strcasecmp(ext, ".cif") == 0) {
+      if (!ReadCIFFile(Chain, &NChain, Cmd) || !NChain)
+          die("Error reading CIF file %s\n", Cmd->InputFile);
+  } else {
+      die("Unsupported file format %s\n", Cmd->InputFile);
+  }
   
   for( Cn=0; Cn<NChain; Cn++ )
     ValidChain += CheckChain(Chain[Cn],Cmd);
@@ -68,7 +76,7 @@ int main(int argc, char **argv)
     die("No hydrogen bonds found in %s\n",Cmd->InputFile);
   
   NoDoubleHBond(HBond,NHBond);
-  
+
   DiscrPhiPsi(Chain,NChain,Cmd);
   
   if(Cmd->ExposedArea)
@@ -82,7 +90,7 @@ int main(int argc, char **argv)
       
       for( i=0; i<NChain; i++ ) 
 	if( Chain[i]->Valid )
-	  Sheet(Chain,Cn,i,HBond,Cmd,PhiPsiMapSheet);    
+      Sheet(Chain,Cn,i,HBond,Cmd,PhiPsiMapSheet);    
       
       BetaTurn(Chain,Cn);
       GammaTurn(Chain,Cn,HBond);
