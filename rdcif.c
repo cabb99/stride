@@ -235,7 +235,6 @@ int Process_CIF_ATOM(char **tokens, int num_fields,
 
     if (idx_label_seq_id != -1)
     {
-        printf("Debug: Processing residue number: %s\n", tokens[idx_label_seq_id]);
         strncpy(residue_number, tokens[idx_label_seq_id], RES_FIELD - 1);
         residue_number[RES_FIELD - 1] = '\0';
     }
@@ -415,54 +414,37 @@ int ReadCIFFile(CHAIN **Chain, int *Cn, COMMAND *Cmd)
     }
 
     fclose(cif);
-    printf("%s:%d\n", __FILE__, __LINE__);
 
     // Process the rest of the data and fill the Chain structures
     for (ChainCnt = 0; ChainCnt < *Cn; ChainCnt++) {
-        printf("%s:%d\n", __FILE__, __LINE__);
         c = Chain[ChainCnt];
-        printf("%s:%d\n", __FILE__, __LINE__);
         if (c->NRes != 0 && !FindAtom(c, c->NRes - 1, "CA", &i))
             c->NRes--;
-        printf("%s:%d\n", __FILE__, __LINE__);
-        printf("Cmd->InputFile: %s\n", Cmd->InputFile);
         c->File = (char *)ckalloc(BUFSZ * sizeof(char));
         if (!c->File) {
             fprintf(stderr, "Memory allocation failed for c->File\n");
             return FAILURE;
         }
         strcpy(c->File, Cmd->InputFile);
-        printf("%s:%d\n", __FILE__, __LINE__);
         strcpy(c->PdbIdent, PdbIdent);
-        printf("%s:%d\n", __FILE__, __LINE__);
-        printf("%s:%d:%d\n", __FILE__, __LINE__, c->NRes);
         // if (c->NRes != 0)
         //     c->NRes++;
-        printf("%s:%d:%d\n", __FILE__, __LINE__, c->NRes);
-        printf("%s:%d\n", __FILE__, __LINE__);
         if (c->NSheet != -1)
             c->NSheet++;
-        printf("%s:%d\n", __FILE__, __LINE__);
         c->Resolution = Resolution;
         c->Method = Method;
         c->Published = Published;
         c->DsspAssigned = DsspAssigned;
         c->NInfo = InfoCnt;
-        printf("%s:%d\n", __FILE__, __LINE__);
         for (i = 0; i < InfoCnt; i++) {
             c->Info[i] = (char *)ckalloc(BUFSZ * sizeof(char));
             strcpy(c->Info[i], Info[i]);
             c->Info[i][71] = '\0';
         }
-        printf("%s:%d\n", __FILE__, __LINE__);
         for (i = 0; i < c->NRes; i++) {
-            printf("%s:%d\n", __FILE__, __LINE__);
             r = c->Rsd[i];
-            printf("%s:%d:%d/%d\n", __FILE__, __LINE__, i, c->NRes);
             r->Inv = (INVOLVED *)ckalloc(sizeof(INVOLVED));
-            printf("%s:%d\n", __FILE__, __LINE__);
             r->Prop = (PROPERTY *)ckalloc(sizeof(PROPERTY));
-            printf("%s:%d\n", __FILE__, __LINE__);
             r->Inv->NBondDnr = 0;
             r->Inv->NBondAcc = 0;
             r->Inv->InterchainHBonds = NO;
@@ -473,31 +455,28 @@ int ReadCIFFile(CHAIN **Chain, int *Cn, COMMAND *Cmd)
             r->Prop->Phi = 360.0;
             r->Prop->Psi = 360.0;
         }
-        printf("%s:%d\n", __FILE__, __LINE__);
-        printf("Chain ID: %c\n", c->Id);
-        printf("Number of Residues: %d\n", c->NRes);
-        printf("Number of Atoms: %d\n", c->NAtom);
-        printf("Resolution: %.2f\n", c->Resolution);
-        printf("Method: %d\n", c->Method);
-        printf("Published: %d\n", c->Published);
-        printf("DSSP Assigned: %d\n", c->DsspAssigned);
-        printf("Number of Info Records: %d\n", c->NInfo);
-        for (i = 0; i < c->NInfo; i++) {
-            printf("Info[%d]: %s\n", i, c->Info[i]);
-        }
-        printf("Residue Number | Residue Name | Atom Name | X Coordinate | Y Coordinate | Z Coordinate | Occupancy | B Factor\n");
-        printf("---------------------------------------------------------------------------------------------\n");
-        for (i = 0; i < c->NRes; i++) {
-            r = c->Rsd[i];
-            for (int j = 0; j < r->NAtom; j++) {
-                printf("%-14s | %-12s | %-9s | %-12.3f | %-12.3f | %-12.3f | %-9.2f | %-8.2f\n",
-                        r->PDB_ResNumb, r->ResType, r->AtomType[j], r->Coord[j][0], r->Coord[j][1], r->Coord[j][2], r->Occupancy[j], r->TempFactor[j]);
-            }
-        }
-        printf("%s:%d\n", __FILE__, __LINE__);
+        // printf("Chain ID: %c\n", c->Id);
+        // printf("Number of Residues: %d\n", c->NRes);
+        // printf("Number of Atoms: %d\n", c->NAtom);
+        // printf("Resolution: %.2f\n", c->Resolution);
+        // printf("Method: %d\n", c->Method);
+        // printf("Published: %d\n", c->Published);
+        // printf("DSSP Assigned: %d\n", c->DsspAssigned);
+        // printf("Number of Info Records: %d\n", c->NInfo);
+        // for (i = 0; i < c->NInfo; i++) {
+        //     printf("Info[%d]: %s\n", i, c->Info[i]);
+        // }
+        // printf("Residue Number | Residue Name | Atom Name | X Coordinate | Y Coordinate | Z Coordinate | Occupancy | B Factor\n");
+        // printf("---------------------------------------------------------------------------------------------\n");
+        // for (i = 0; i < c->NRes; i++) {
+        //     r = c->Rsd[i];
+        //     for (int j = 0; j < r->NAtom; j++) {
+        //         printf("%-14s | %-12s | %-9s | %-12.3f | %-12.3f | %-12.3f | %-9.2f | %-8.2f\n",
+        //                 r->PDB_ResNumb, r->ResType, r->AtomType[j], r->Coord[j][0], r->Coord[j][1], r->Coord[j][2], r->Occupancy[j], r->TempFactor[j]);
+        //     }
+        // }
     }
     for (i = 0; i < InfoCnt; i++)
         free(Info[i]);
-    printf("%s:%d\n", __FILE__, __LINE__);
     return SUCCESS;
 }
