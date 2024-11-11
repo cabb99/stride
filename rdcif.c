@@ -5,7 +5,26 @@
 #include "stride.h"
 
 
-#define MAX_CIF_TOKENS 100
+#define MAX_CIF_TOKENS 200
+
+char* trim(char* str) {
+    char* end;
+
+    // Trim leading space
+    while(isspace((unsigned char)*str)) str++;
+
+    if(*str == 0)  // All spaces?
+        return str;
+
+    // Trim trailing space
+    end = str + strlen(str) - 1;
+    while(end > str && isspace((unsigned char)*end)) end--;
+
+    // Write new null terminator
+    *(end+1) = 0;
+
+    return str;
+}
 
 int cif_tokenize(const char *line, char **tokens, int max_tokens) {
     int num_tokens = 0;
@@ -343,35 +362,55 @@ int ReadCIFFile(CHAIN **Chain, int *Cn, COMMAND *Cmd)
             if (in_atom_site_loop && num_fields > 0) {
                 // Map field names to indices
                 for (i = 0; i < num_fields; i++) {
-                    if (strcmp(atom_site_fields[i], "_atom_site.group_PDB") == 0)
+                    char* field = trim(atom_site_fields[i]);
+                    if (strcmp(field, "_atom_site.group_PDB") == 0)
                         idx_group_PDB = i;
-                    else if (strcmp(atom_site_fields[i], "_atom_site.id") == 0)
+                    else if (strcmp(field, "_atom_site.id") == 0)
                         idx_id = i;
-                    else if (strcmp(atom_site_fields[i], "_atom_site.type_symbol") == 0)
+                    else if (strcmp(field, "_atom_site.type_symbol") == 0)
                         idx_type_symbol = i;
-                    else if (strcmp(atom_site_fields[i], "_atom_site.label_atom_id") == 0)
+                    else if (strcmp(field, "_atom_site.label_atom_id") == 0)
                         idx_label_atom_id = i;
-                    else if (strcmp(atom_site_fields[i], "_atom_site.label_comp_id") == 0)
+                    else if (strcmp(field, "_atom_site.label_comp_id") == 0)
                         idx_label_comp_id = i;
-                    else if (strcmp(atom_site_fields[i], "_atom_site.label_asym_id") == 0)
+                    else if (strcmp(field, "_atom_site.label_asym_id") == 0)
                         idx_label_asym_id = i;
-                    else if (strcmp(atom_site_fields[i], "_atom_site.label_entity_id") == 0)
+                    else if (strcmp(field, "_atom_site.label_entity_id") == 0)
                         idx_label_entity_id = i;
-                    else if (strcmp(atom_site_fields[i], "_atom_site.label_seq_id") == 0)
+                    else if (strcmp(field, "_atom_site.label_seq_id") == 0)
                         idx_label_seq_id = i;
-                    else if (strcmp(atom_site_fields[i], "_atom_site.Cartn_x") == 0)
+                    else if (strcmp(field, "_atom_site.Cartn_x") == 0)
                         idx_Cartn_x = i;
-                    else if (strcmp(atom_site_fields[i], "_atom_site.Cartn_y") == 0)
+                    else if (strcmp(field, "_atom_site.Cartn_y") == 0)
                         idx_Cartn_y = i;
-                    else if (strcmp(atom_site_fields[i], "_atom_site.Cartn_z") == 0)
+                    else if (strcmp(field, "_atom_site.Cartn_z") == 0)
                         idx_Cartn_z = i;
-                    else if (strcmp(atom_site_fields[i], "_atom_site.occupancy") == 0)
+                    else if (strcmp(field, "_atom_site.occupancy") == 0)
                         idx_occupancy = i;
-                    else if (strcmp(atom_site_fields[i], "_atom_site.B_iso_or_equiv") == 0)
+                    else if (strcmp(field, "_atom_site.B_iso_or_equiv") == 0)
                         idx_B_iso_or_equiv = i;
-                    else if (strcmp(atom_site_fields[i], "_atom_site.label_alt_id") == 0)
+                    else if (strcmp(field, "_atom_site.label_alt_id") == 0)
                         idx_label_alt_id = i;
+                    else
+                        fprintf(stderr, "Warning: Unrecognized field name: %s\n", field);
                 }
+                // Print all the indices
+                // printf("Number of fields: %d\n", num_fields);
+                // printf("Field Indices:\n");
+                // printf("idx_group_PDB: %d\n", idx_group_PDB);
+                // printf("idx_id: %d\n", idx_id);
+                // printf("idx_type_symbol: %d\n", idx_type_symbol);
+                // printf("idx_label_atom_id: %d\n", idx_label_atom_id);
+                // printf("idx_label_comp_id: %d\n", idx_label_comp_id);
+                // printf("idx_label_asym_id: %d\n", idx_label_asym_id);
+                // printf("idx_label_entity_id: %d\n", idx_label_entity_id);
+                // printf("idx_label_seq_id: %d\n", idx_label_seq_id);
+                // printf("idx_Cartn_x: %d\n", idx_Cartn_x);
+                // printf("idx_Cartn_y: %d\n", idx_Cartn_y);
+                // printf("idx_Cartn_z: %d\n", idx_Cartn_z);
+                // printf("idx_occupancy: %d\n", idx_occupancy);
+                // printf("idx_B_iso_or_equiv: %d\n", idx_B_iso_or_equiv);
+                // printf("idx_label_alt_id: %d\n", idx_label_alt_id);
 
                 // Process data lines
                 do {
@@ -393,6 +432,30 @@ int ReadCIFFile(CHAIN **Chain, int *Cn, COMMAND *Cmd)
                                               idx_B_iso_or_equiv, idx_label_alt_id, Chain, Cn, &First_ATOM, Cmd)) {
                             fclose(cif);
                             fprintf(stderr, "Error: Failed to process ATOM record\n");
+                            fprintf(stderr, "Line: %s\n", Buffer);
+                            printf("Tokens: ");
+                            for (int j = 0; j < num_fields; j++) {
+                                printf("%s ", tokens[j]);
+                            }
+                            printf("\nnum_fields: %d\n", num_fields);
+                            printf("idx_group_PDB: %d\n", idx_group_PDB);
+                            printf("idx_id: %d\n", idx_id);
+                            printf("idx_type_symbol: %d\n", idx_type_symbol);
+                            printf("idx_label_atom_id: %d\n", idx_label_atom_id);
+                            printf("idx_label_comp_id: %d\n", idx_label_comp_id);
+                            printf("idx_label_asym_id: %d\n", idx_label_asym_id);
+                            printf("idx_label_entity_id: %d\n", idx_label_entity_id);
+                            printf("idx_label_seq_id: %d\n", idx_label_seq_id);
+                            printf("idx_Cartn_x: %d\n", idx_Cartn_x);
+                            printf("idx_Cartn_y: %d\n", idx_Cartn_y);
+                            printf("idx_Cartn_z: %d\n", idx_Cartn_z);
+                            printf("idx_occupancy: %d\n", idx_occupancy);
+                            printf("idx_B_iso_or_equiv: %d\n", idx_B_iso_or_equiv);
+                            printf("idx_label_alt_id: %d\n", idx_label_alt_id);
+                            printf("Chain: %p\n", (void *)Chain);
+                            printf("Cn: %d\n", *Cn);
+                            printf("Cmd: %p\n", (void *)Cmd);
+
                             return FAILURE;
                         }
                     } else {
