@@ -7,7 +7,7 @@ int CheckChain(CHAIN *Chain, COMMAND *Cmd)
   int i, j, AsnNumb=0, At, SuspCnt, Beg, End;
   float Content;
 
-  if( Cmd->NProcessed && !ChInStr(Cmd->Processed,SpaceToDash(Chain->Id)) ) {
+  if( Cmd->NProcessed && !ChInStr(Cmd->Processed,SpaceToDash2(Chain->Id)) ) {
     Chain->Valid = NO;
     return(FAILURE);
   }
@@ -178,7 +178,7 @@ int CheckChain(CHAIN *Chain, COMMAND *Cmd)
 int NotValid(CHAIN *Chain, char *Message)
 {
   
-  fprintf(stderr,"IGNORED %s %c ",Chain->File,SpaceToDash(Chain->Id));
+  fprintf(stderr,"IGNORED %s %c ",Chain->File,SpaceToDash2(Chain->Id));
   fprintf(stderr,"(%s)\n",Message);
   Chain->Valid = NO;
   return(FAILURE);

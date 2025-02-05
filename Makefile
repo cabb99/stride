@@ -1,7 +1,7 @@
 #FLAGS = -lm -L/usr/pub/lib -lefence -o
 #CC = cc -O2 -fullwarn -TENV:large_GOT
-#CC = cc -g -Wall
-CC = gcc -O2  # at least for SunOS
+CC = cc -g # -Wall
+#CC = gcc -O2  # at least for SunOS
 #CC = cc -g
 
 #CC = cc -O2 -fullwarn
@@ -29,4 +29,3 @@ clean:
 
 show:
 	echo $(SOURCE)
-

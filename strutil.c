@@ -157,6 +157,27 @@ char SpaceToDash(char Id)
   return(NewId);
 }
 
+char *SpaceToDash2(char *Id) {
+    // Allocate memory for NewId with fixed size MAX_CHAINID
+    char *NewId = (char *)malloc(MAX_CHAINID * sizeof(char));
+    if (!NewId) {
+        perror("Memory allocation failed");
+        exit(1); // Handle memory allocation failure as needed
+    }
+
+    // Copy and transform each character
+    for (int i = 0; i < MAX_CHAINID - 1 && Id[i] != '\0'; i++) {
+        if (Id[i] == ' ')
+            NewId[i] = '-';
+        else
+            NewId[i] = Id[i];
+    }
+
+    // Null-terminate the new string at MAX_CHAINID - 1
+    NewId[MAX_CHAINID - 1] = '\0';
+    return NewId;
+}
+
 BOOLEAN ChInStr(char *String, char Char)
 {
 

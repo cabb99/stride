@@ -10,6 +10,7 @@ char **AllocAsn(CHAIN **Chain, int NChain);
 char **CharMatrix(int M, int N);
 char *OneToThree(char One);
 char SpaceToDash(char Id);
+char *SpaceToDash2(char *Id);
 char *Tim(void);
 char ThreeToOne(char *Three);
 char *tolostr(char *InputString);

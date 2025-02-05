@@ -29,7 +29,8 @@
 #define MAX_AtomType              200
 #define MAX_ResType               50
 #define MAXNONSTAND               4.0
-#define MAX_CHAIN                 100
+#define MAX_CHAIN                 10000
+#define MAX_CHAINID               5  
 #define MAX_RES                   20000
 #define MAX_HETRES                20000
 #define MAX_HET                   200
@@ -202,7 +203,8 @@ typedef struct {
                  int NRes, NHetRes, NonStandRes, Ter;
 		 int NHet, NAtom, NonStandAtom, NHelix, NSheet;
 		 int NTurn, NAssignedTurn, NBond, NHydrBond, NHydrBondInterchain, NHydrBondTotal, NInfo;
-		 char Id, *File;
+		 char *Id;
+         char *File;
 		 float Resolution;
 		 enum METHOD Method;
 		 BOOLEAN Valid, Published, DsspAssigned;

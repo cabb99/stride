@@ -95,7 +95,7 @@ int IsAminoAcid(char *residue_name)
 }
 
 int AddAtomToChain(CHAIN **Chain, int *Cn, char *atom_name, char alt_loc,
-                   char *residue_name, char *residue_number, char chain_id,
+                   char *residue_name, char *residue_number, char *chain_id,
                    float x, float y, float z, float occupancy, float b_factor,
                    char *element, BOOLEAN *First_ATOM)
 {
@@ -103,19 +103,19 @@ int AddAtomToChain(CHAIN **Chain, int *Cn, char *atom_name, char alt_loc,
     RESIDUE *r = NULL;
     int i;
 
-    // Find or create the chain
+    /* Try to find an existing chain with this chain_id */
     for (i = 0; i < *Cn; i++)
     {
-        if (Chain[i]->Id == chain_id)
+        if (strncmp(Chain[i]->Id, chain_id, MAX_CHAINID) == 0)
         {
             c = Chain[i];
             break;
         }
     }
 
+    /* If not found, create a new chain */
     if (c == NULL)
     {
-        // Create a new chain using InitChain
         if (*Cn >= MAX_CHAIN)
         {
             fprintf(stderr, "Exceeded maximum number of chains (%d)\n", MAX_CHAIN);
@@ -123,7 +123,10 @@ int AddAtomToChain(CHAIN **Chain, int *Cn, char *atom_name, char alt_loc,
         }
         InitChain(&Chain[*Cn]);
         c = Chain[*Cn];
-        c->Id = chain_id;
+
+        strncpy(c->Id, chain_id, MAX_CHAINID - 1);
+        c->Id[MAX_CHAINID - 1] = '\0';
+
         (*Cn)++;
     }
 
@@ -142,7 +145,7 @@ int AddAtomToChain(CHAIN **Chain, int *Cn, char *atom_name, char alt_loc,
         // Create a new residue
         if (c->NRes >= MAX_RES)
         {
-            fprintf(stderr, "Exceeded maximum number of residues (%d) in chain %c\n", MAX_RES, chain_id);
+            fprintf(stderr, "Exceeded maximum number of residues (%d) in chain %s\n", MAX_RES, chain_id);
             return FAILURE;
         }
         r = (RESIDUE *)malloc(sizeof(RESIDUE));
@@ -164,6 +167,10 @@ int AddAtomToChain(CHAIN **Chain, int *Cn, char *atom_name, char alt_loc,
     // Add the atom to the residue
     if (r->NAtom >= MAX_AT_IN_RES)
     {
+        //Print the chain and residue information
+        fprintf(stderr, "Chain ID: %s\n", c->Id);
+        fprintf(stderr, "Residue name: %s\n", r->ResType);
+        fprintf(stderr, "Residue number: %s\n", r->PDB_ResNumb);
         fprintf(stderr, "Exceeded maximum number of atoms (%d) in residue %s\n", MAX_AT_IN_RES, residue_number);
         return FAILURE;
     }
@@ -199,7 +206,7 @@ int Process_CIF_ATOM(char **tokens, int num_fields,
                      CHAIN **Chain, int *Cn, BOOLEAN *First_ATOM, COMMAND *Cmd)
 {
     float x, y, z, occupancy, b_factor;
-    char element[3], atom_name[5], residue_name[4], chain_id;
+    char element[3], atom_name[5], residue_name[4], chain_id[MAX_CHAINID];
     char residue_number[RES_FIELD]; // PDB residue number as string
     char alt_loc;
 
@@ -260,7 +267,12 @@ int Process_CIF_ATOM(char **tokens, int num_fields,
     else
         strcpy(residue_number, "   "); // Default or error
 
-    chain_id = (idx_label_asym_id != -1) ? tokens[idx_label_asym_id][0] : ' ';
+    if (idx_label_asym_id != -1) {
+        strncpy(chain_id, tokens[idx_label_asym_id], 4);
+        chain_id[4] = '\0';
+    } else {
+        strcpy(chain_id, " ");
+    }
     alt_loc = (idx_label_alt_id != -1) ? tokens[idx_label_alt_id][0] : ' ';
 
     // Now, process the atom and add it to the data structures
@@ -268,7 +280,7 @@ int Process_CIF_ATOM(char **tokens, int num_fields,
                         chain_id, x, y, z, occupancy, b_factor, element, First_ATOM))
     {
         printf("Error: Failed to add atom to chain\n");
-        printf("Debug: %s %c %s %s %c %f %f %f %f %f %s\n",
+        printf("Debug: %s %c %s %s %s %f %f %f %f %f %s\n",
                atom_name, alt_loc, residue_name, residue_number, chain_id,
                x, y, z, occupancy, b_factor, element);
         return FAILURE;
@@ -293,6 +305,7 @@ int ReadCIFFile(CHAIN **Chain, int *Cn, COMMAND *Cmd)
 
     *Cn = 0;
     
+    printf("%s:%d\n", __FILE__, __LINE__);
     if (!(cif = fopen(Cmd->InputFile, "r"))) {
         fprintf(stderr, "Failed to open CIF file: %s\n", Cmd->InputFile);
         return FAILURE;
@@ -309,7 +322,7 @@ int ReadCIFFile(CHAIN **Chain, int *Cn, COMMAND *Cmd)
     int idx_label_seq_id = -1, idx_Cartn_x = -1, idx_Cartn_y = -1, idx_Cartn_z = -1;
     int idx_occupancy = -1, idx_B_iso_or_equiv = -1, idx_label_alt_id = -1;
 
-    
+    printf("%s:%d\n", __FILE__, __LINE__); 
     while (fgets(Buffer, BUFSZ, cif)) {
         // Remove trailing newline
         Buffer[strcspn(Buffer, "\n")] = '\0';
@@ -358,7 +371,7 @@ int ReadCIFFile(CHAIN **Chain, int *Cn, COMMAND *Cmd)
                     break;
                 }
             }
-
+            printf("%s:%d\n", __FILE__, __LINE__);
             if (in_atom_site_loop && num_fields > 0) {
                 // Map field names to indices
                 for (i = 0; i < num_fields; i++) {
@@ -392,7 +405,8 @@ int ReadCIFFile(CHAIN **Chain, int *Cn, COMMAND *Cmd)
                     else if (strcmp(field, "_atom_site.label_alt_id") == 0)
                         idx_label_alt_id = i;
                     else
-                        fprintf(stderr, "Warning: Unrecognized field name: %s\n", field);
+                        // fprintf(stderr, "Warning: Unrecognized field name: %s\n", field);
+                        ;
                 }
                 // Print all the indices
                 // printf("Number of fields: %d\n", num_fields);
@@ -477,7 +491,7 @@ int ReadCIFFile(CHAIN **Chain, int *Cn, COMMAND *Cmd)
     }
 
     fclose(cif);
-
+    printf("%s:%d\n", __FILE__, __LINE__);
     // Process the rest of the data and fill the Chain structures
     for (ChainCnt = 0; ChainCnt < *Cn; ChainCnt++) {
         c = Chain[ChainCnt];
