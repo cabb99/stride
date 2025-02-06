@@ -171,7 +171,7 @@ void ReportDetailed(CHAIN **Chain, int NChain, FILE *Out, COMMAND *Cmd)
     
     for( i=0; i<Chain[Cn]->NRes; i++ ) {
       p = Chain[Cn]->Rsd[i];
-      sprintf(Tmp,"ASG  %3s %c %4s %4d    %c   %11s   %7.2f   %7.2f   %7.1f",
+      sprintf(Tmp,"ASG  %3s %s %4s %4d    %c   %11s   %7.2f   %7.2f   %7.1f",
 	      p->ResType,SpaceToDash(Chain[Cn]->Id),p->PDB_ResNumb,i+1,
 	      p->Prop->Asn,Translate(p->Prop->Asn),p->Prop->Phi,
 	      p->Prop->Psi,p->Prop->Solv);
@@ -225,7 +225,7 @@ void ReportHydrBonds(CHAIN **Chain, int NChain, HBOND **HBond, FILE *Out,
   for( Cn=0; Cn<NChain; Cn++ )
     if( Chain[Cn]->Valid ) {
 
-      sprintf(Tmp,"HBC  %-6d  %s %c %4d",
+      sprintf(Tmp,"HBC  %-6d  %s %s %4d",
 	      Chain[Cn]->NHydrBond,Chain[Cn]->File,SpaceToDash(Chain[Cn]->Id),Chain[Cn]->NRes);
       Glue(Bf,Tmp,Out);
     }
@@ -247,12 +247,10 @@ void ReportHydrBonds(CHAIN **Chain, int NChain, HBOND **HBond, FILE *Out,
 	p = HBond[r->Inv->HBondDnr[k]];
 	if( p->ExistHydrBondRose ) {
 	  Res = p->Acc->A_Res;
-	  sprintf(Tmp,"DNR %4s %c %4s %4d -> ",
+	  sprintf(Tmp,"DNR %4s %s %4s %4d -> ",
 		  r->ResType,SpaceToDash(Chain[Cn]->Id),r->PDB_ResNumb,i);
-
-	  sprintf(Tmp1,"%4s %c %4s %4d %4.1f %6.1f %6.1f %6.1f %6.1f ",
+	  sprintf(Tmp1,"%4s %s %4s %4d %4.1f %6.1f %6.1f %6.1f %6.1f ",
 		  p->Acc->Chain->Rsd[Res]->ResType,
-		  /* patch replace SpaceToDash(Chain[Cn]->Id), */
 		  SpaceToDash(p->Acc->Chain->Id),
 		  p->Acc->Chain->Rsd[Res]->PDB_ResNumb,Res,p->AccDonDist,p->AccAng,
 		  p->DonAng,p->AccDonAng,p->DonAccAng);
@@ -267,10 +265,10 @@ void ReportHydrBonds(CHAIN **Chain, int NChain, HBOND **HBond, FILE *Out,
 	p = HBond[r->Inv->HBondAcc[k]];
 	if( p->ExistHydrBondRose ) {
 	  Res = p->Dnr->D_Res;
-	  sprintf(Tmp,"ACC %4s %c %4s %4d -> ",
+	  sprintf(Tmp,"ACC %4s %s %4s %4d -> ",
 		  r->ResType,SpaceToDash(Chain[Cn]->Id),r->PDB_ResNumb,i);
 
-	  sprintf(Tmp1,"%4s %c %4s %4d %4.1f %6.1f %6.1f %6.1f %6.1f ",
+	  sprintf(Tmp1,"%4s %s %4s %4d %4.1f %6.1f %6.1f %6.1f %6.1f ",
 		  p->Dnr->Chain->Rsd[Res]->ResType,
 		  /* patch replace SpaceToDash(Chain[Cn]->Id), */
 		  SpaceToDash(p->Dnr->Chain->Id),
@@ -299,7 +297,7 @@ void ReportSSBonds(CHAIN **Chain, FILE *Out)
 
   for( i=0; i<Chain[0]->NBond; i++ ) {
     s = Chain[0]->SSbond[i];
-    sprintf(Tmp,"LOC  Disulfide    CYS  %4s %c      CYS   %4s %c         ",
+    sprintf(Tmp,"LOC  Disulfide    CYS  %4s %s      CYS   %4s %s         ",
 	    s->PDB_ResNumb1,SpaceToDash(s->ChainId1),
 	    s->PDB_ResNumb2,SpaceToDash(s->ChainId2));
 
@@ -332,7 +330,7 @@ void ReportTurnTypes(CHAIN **Chain, int NChain, FILE *Out, COMMAND *Cmd)
       continue;
     for( Tn=0; Tn<Chain[Cn]->NAssignedTurn; Tn++ ) {
       t = Chain[Cn]->AssignedTurn[Tn];
-      sprintf(Tmp,"LOC  %-11s  %3s  %4s %c      %3s   %4s %c",
+      sprintf(Tmp,"LOC  %-11s  %3s  %4s %s      %3s   %4s %s",
 	      Translate(t->TurnType),t->Res1,t->PDB_ResNumb1,
 	      SpaceToDash(Chain[Cn]->Id),t->Res2,
 	      t->PDB_ResNumb2,SpaceToDash(Chain[Cn]->Id));
@@ -373,7 +371,7 @@ void ReportShort(CHAIN **Chain, int NChain, FILE *Out, COMMAND *Cmd)
       NStr = Boundaries(Asn,Chain[Cn]->NRes,(*StrTypes),Bound);
 
       for( i=0; i<NStr; i++ ) {
-	sprintf(Tmp,"LOC  %-10s   %3s  %4s %c      %3s   %4s %c",Translate(*StrTypes),
+	sprintf(Tmp,"LOC  %-10s   %3s  %4s %s      %3s   %4s %s",Translate(*StrTypes),
 		Chain[Cn]->Rsd[Bound[i][0]]->ResType,
 		Chain[Cn]->Rsd[Bound[i][0]]->PDB_ResNumb,
 		SpaceToDash(Chain[Cn]->Id),

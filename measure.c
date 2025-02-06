@@ -104,7 +104,7 @@ void Measure(CHAIN **Chain, int NChain, int El, COMMAND *Cmd, FILE *Out)
     
     fprintf(Out,"%6.4f %6.4f | %6.4f %6.4f | ",Q2_,Q2_Dssp,O_,O_Dssp);
     
-    fprintf(Out,"%4d %4d %4d %4d | %4d %4d %4d %4d |%4d %4d %4d %4d |%4d %4d %4d %4d | %s%c %4d %4.2f | %5.3f %5.3f %5.3f",
+    fprintf(Out,"%4d %4d %4d %4d | %4d %4d %4d %4d |%4d %4d %4d %4d |%4d %4d %4d %4d | %s%s %4d %4.2f | %5.3f %5.3f %5.3f",
 	    Qual_H.TP,Qual_H.TN,Qual_H.FP,Qual_H.FN,
 	    QualDssp_H.TP,QualDssp_H.TN,QualDssp_H.FP,QualDssp_H.FN,
 	    Qual_E.TP,Qual_E.TN,Qual_E.FP,Qual_E.FN,

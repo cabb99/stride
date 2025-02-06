@@ -241,6 +241,7 @@ int Process_CIF_ATOM(char **tokens, int num_fields,
     {
         strncpy(atom_name, tokens[idx_label_atom_id], 4);
         atom_name[4] = '\0';
+        //printf("Debug: Atom name: --%s--\n", atom_name);
     }
     else
         strcpy(atom_name, "    ");

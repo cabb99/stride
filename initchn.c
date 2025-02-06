@@ -23,8 +23,10 @@ void InitChain(CHAIN **Chain)
   (*Chain)->Ter                 = 0;
   (*Chain)->Resolution          = 0.0;
 
-  (*Chain)->File                = (char           *)ckalloc(BUFSZ*sizeof(char));
   (*Chain)->Id                  = (char           *)ckalloc(MAX_CHAINID*sizeof(char));
+  (*Chain)->Id[0] = '\0';
+
+  (*Chain)->File                = (char           *)ckalloc(BUFSZ*sizeof(char));
   (*Chain)->Rsd                 = (RESIDUE       **)ckalloc(MAX_RES*sizeof(RESIDUE *));
   (*Chain)->HetRsd              = (HETERORESIDUE **)ckalloc(MAX_HETRES*sizeof(HETERORESIDUE *));
   (*Chain)->Het                 = (HET           **)ckalloc(MAX_HET*sizeof(HET *));

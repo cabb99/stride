@@ -25,8 +25,8 @@ int SSBond(CHAIN **Chain, int NChain)
 	    Chain[0]->SSbond[Bn] =  (SSBOND *)ckalloc(sizeof(SSBOND));
 	    strcpy(Chain[0]->SSbond[Bn]->PDB_ResNumb1,Chain[Cn1]->Rsd[Res1]->PDB_ResNumb);
 	    strcpy(Chain[0]->SSbond[Bn]->PDB_ResNumb2,Chain[Cn2]->Rsd[Res2]->PDB_ResNumb);
-	    Chain[0]->SSbond[Bn]->ChainId1 = Chain[Cn1]->Id;
-	    Chain[0]->SSbond[Bn]->ChainId2 = Chain[Cn2]->Id;
+	    strcpy(Chain[0]->SSbond[Bn]->ChainId1, Chain[Cn1]->Id);
+	    strcpy(Chain[0]->SSbond[Bn]->ChainId2, Chain[Cn2]->Id);
 	    Chain[0]->SSbond[Bn]->AsnSource = Stride;
 	    Chain[0]->NBond++;
 	    Cnt++;

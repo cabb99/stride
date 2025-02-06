@@ -86,7 +86,7 @@ void Helix(CHAIN **Chain, int Cn, HBOND **HBond, COMMAND *Cmd, float **PhiPsiMap
   }
 
   if( Cmd->Info ) {
-    fprintf(stdout,"%s%c\n",Chain[Cn]->File,Chain[Cn]->Id);
+    fprintf(stdout,"%s%s\n",Chain[Cn]->File,Chain[Cn]->Id);
 
     for( i=0; i<Chain[Cn]->NRes-4; i++ ) {
 

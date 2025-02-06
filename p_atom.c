@@ -9,7 +9,7 @@ int Process_ATOM(BUFFER Buffer, CHAIN **Chain, int *ChainNumber,
   int CC, NR, NA;
   static char LastRes[MAX_CHAIN][RES_FIELD];
   RESIDUE *r;
-
+  
   if( Cmd->NActive && !ChInStr(Cmd->Active,SpaceToDash(Buffer[21])) )
      return(SUCCESS);
 
@@ -22,13 +22,53 @@ int Process_ATOM(BUFFER Buffer, CHAIN **Chain, int *ChainNumber,
     *First_ATOM = NO;
   }
   
-  for( CC=0; CC < *ChainNumber && Chain[CC]->Id != Buffer[21] ; CC++ );
-  
-  if( CC == *ChainNumber ) {
+  /* Find if chain exists */
+  for (CC = 0; CC < *ChainNumber && Chain[CC] != NULL && Chain[CC]->Id[0] != Buffer[21]; CC++);
+
+  if (CC == *ChainNumber) { 
     InitChain(&Chain[CC]); 
-    Chain[CC]->Id = Buffer[21];
+    Chain[CC]->Id[0] = Buffer[21];
+    Chain[CC]->Id[1] = '\0';
+
     (*ChainNumber)++;
-  }
+    }
+
+//   char chainBuf[2] = { Buffer[21], '\0' };  /* 1 char + null */
+
+//   for (CC = 0; CC < *ChainNumber; CC++) {
+//     // Print CC
+//     printf("ChainNumber=%d\n", CC);
+//     if (Chain[CC] == NULL) {
+//         printf("ERROR: Chain[%d] is NULL\n", CC);
+//         break;
+//     }
+
+//     if (Chain[CC]->Id == NULL) {
+//         printf("ERROR: Chain[%d]->Id is NULL\n", CC);
+//         break;
+//     }
+
+//     printf("Comparing Chain[%d]->Id='%s' with chainBuf='%s'\n", CC, Chain[CC]->Id, chainBuf);
+
+
+//     if (strcmp(Chain[CC]->Id, chainBuf) == 0) {
+//         break;  /* We found the chain that matches Buffer[21] */
+//     }
+//   }
+
+//   if (CC == *ChainNumber) {
+//     InitChain(&Chain[CC]);
+
+//     Chain[CC]->Id = (char *)malloc(2); /* big enough for 1 char + null */
+//     if (!Chain[CC]->Id) {
+//         fprintf(stderr, "Out of memory allocating chain ID\n");
+//         return FAILURE; 
+//     }
+//     Chain[CC]->Id[0] = chainBuf[0];
+//     Chain[CC]->Id[1] = chainBuf[1];
+
+//     (*ChainNumber)++;
+//   }
   else
   if( Chain[CC]->Ter == 1 ) 
     return(SUCCESS);

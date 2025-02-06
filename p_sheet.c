@@ -14,7 +14,8 @@ int Process_SHEET(BUFFER Buffer, CHAIN **Chain, int *ChainNumber, COMMAND *Cmd)
 
   if( CC == *ChainNumber ) {
     InitChain(&Chain[CC]); 
-    Chain[CC]->Id = Buffer[21];
+    Chain[CC]->Id[0] = Buffer[21];
+    Chain[CC]->Id[1] = '\0';
     (*ChainNumber)++;
   }
 

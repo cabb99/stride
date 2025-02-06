@@ -13,7 +13,8 @@ int Process_SSBOND(BUFFER Buffer, CHAIN **Chain, int *ChainNumber, COMMAND *Cmd)
 
   if( *ChainNumber == 0 ) {
     InitChain(&Chain[CC]); 
-    Chain[CC]->Id = Buffer[15];
+    Chain[CC]->Id[0] = Buffer[15];
+    Chain[CC]->Id[1] = '\0';
     (*ChainNumber)++;
   }
 
@@ -28,8 +29,10 @@ int Process_SSBOND(BUFFER Buffer, CHAIN **Chain, int *ChainNumber, COMMAND *Cmd)
   SplitString(Tmp+31,Field,1);
   strcpy(Chain[CC]->SSbond[BC]->PDB_ResNumb2,Field[0]);
 
-  Chain[CC]->SSbond[BC]->ChainId1 = Buffer[15];
-  Chain[CC]->SSbond[BC]->ChainId2 = Buffer[29];
+  Chain[CC]->SSbond[BC]->ChainId1[0] = Buffer[15];
+  Chain[CC]->SSbond[BC]->ChainId2[0] = Buffer[29];
+  Chain[CC]->SSbond[BC]->ChainId1[1] = '\0';
+  Chain[CC]->SSbond[BC]->ChainId2[1] = '\0';
 
   Chain[CC]->SSbond[BC]->InsCode1 = Buffer[21];
   Chain[CC]->SSbond[BC]->InsCode2 = Buffer[35];

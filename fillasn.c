@@ -20,9 +20,9 @@ void FillAsnAntiPar(char *Asn1, char *Asn2, CHAIN **Chain, int Cn1, int Cn2,
       continue;
     
     if( Cmd->Info ) {
-      fprintf(stdout,"From: %c %c ",
+      fprintf(stdout,"From: %s %s ",
 	      Pat[i]->Hb1->Dnr->Chain->Id,Pat[i]->Hb2->Dnr->Chain->Id);
-      if( Pat[i]->Hb1->Dnr->Chain->Id == Chain[Cn1]->Id )
+      if( strcmp(Pat[i]->Hb1->Dnr->Chain->Id,Chain[Cn1]->Id) )
 	fprintf(stdout,"%s %s %s %s \n",
 	    Chain[Cn1]->Rsd[Pat[i]->Hb1->Dnr->D_Res]->PDB_ResNumb,
 	    Chain[Cn2]->Rsd[Pat[i]->Hb1->Acc->A_Res]->PDB_ResNumb,
@@ -51,15 +51,15 @@ void FillAsnAntiPar(char *Asn1, char *Asn2, CHAIN **Chain, int Cn1, int Cn2,
 	CurrPat = CurrPat->Nei2;
       }
       else {
-	fprintf(stdout,"Cycle Anti%s%c i = %d \n",Chain[Cn1]->File,Chain[Cn1]->Id,i);
+	fprintf(stdout,"Cycle Anti%s%s i = %d \n",Chain[Cn1]->File,Chain[Cn1]->Id,i);
 	break;
       }
     }  
     
     if( Cmd->Info ) {
-      fprintf(stdout,"To: %c %c ",
+      fprintf(stdout,"To: %s %s ",
 	      CurrPat->Hb1->Dnr->Chain->Id,CurrPat->Hb2->Dnr->Chain->Id);
-      if( CurrPat->Hb1->Dnr->Chain->Id == Chain[Cn1]->Id )
+      if( strcmp(CurrPat->Hb1->Dnr->Chain->Id, Chain[Cn1]->Id) )
 	fprintf(stdout,"%s %s %s %s \n",
 	    Chain[Cn1]->Rsd[CurrPat->Hb1->Dnr->D_Res]->PDB_ResNumb,
 	    Chain[Cn2]->Rsd[CurrPat->Hb1->Acc->A_Res]->PDB_ResNumb,
@@ -179,9 +179,9 @@ void FillAsnPar(char *Asn1, char *Asn2, CHAIN **Chain, int Cn1, int Cn2,
       continue;
     
     if( Cmd->Info ) {
-      fprintf(stdout,"From: %c %c ",
+      fprintf(stdout,"From: %s %s ",
 	      Pat[i]->Hb1->Dnr->Chain->Id,Pat[i]->Hb2->Dnr->Chain->Id);
-      if( Pat[i]->Hb1->Dnr->Chain->Id == Chain[Cn1]->Id )
+      if( strcmp(Pat[i]->Hb1->Dnr->Chain->Id, Chain[Cn1]->Id) )
 	fprintf(stdout,"%s %s %s %s \n",
 	    Chain[Cn1]->Rsd[Pat[i]->Hb1->Dnr->D_Res]->PDB_ResNumb,
 	    Chain[Cn2]->Rsd[Pat[i]->Hb1->Acc->A_Res]->PDB_ResNumb,
@@ -210,7 +210,7 @@ void FillAsnPar(char *Asn1, char *Asn2, CHAIN **Chain, int Cn1, int Cn2,
     }  
 
     if( Cmd->Info ) {
-      fprintf(stdout,"To: %c %c ",
+      fprintf(stdout,"To: %s %s ",
 	      CurrPat->Hb1->Dnr->Chain->Id,CurrPat->Hb2->Dnr->Chain->Id);
       if( CurrPat->Hb1->Dnr->Chain->Id == Chain[Cn1]->Id )
 	fprintf(stdout,"%s %s %s %s \n",

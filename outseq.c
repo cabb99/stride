@@ -16,7 +16,7 @@ int OutSeq(CHAIN **Chain, int NChain, COMMAND *Cmd)
     if( !Chain[Cn]->Valid )
        continue;
 
-    fprintf(Seq,">%s %c  %d %7.3f\n",
+    fprintf(Seq,">%s %s  %d %7.3f\n",
 	    Chain[Cn]->File,SpaceToDash(Chain[Cn]->Id),Chain[Cn]->NRes,
 	    Chain[Cn]->Resolution);
 

@@ -195,7 +195,7 @@ typedef struct {
 typedef struct {
                  char PDB_ResNumb1[RES_FIELD], PDB_ResNumb2[RES_FIELD];
                  char InsCode1, InsCode2;
-		 char ChainId1, ChainId2;
+		 char *ChainId1[MAX_CHAINID], *ChainId2[MAX_CHAINID];
 		 enum ASNSOURCE AsnSource;
 	       } SSBOND;
 

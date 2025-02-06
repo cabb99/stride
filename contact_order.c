@@ -21,7 +21,7 @@ void ContactOrder(CHAIN **Chain, int NChain, COMMAND *Cmd )
     }
     else { 
       if( !PdbN2SeqN(Chain[Cn],Cmd->FirstResidue,&From) ) {
-	fprintf(stderr,"Residue %s does not exist in %s chain %c\n",
+	fprintf(stderr,"Residue %s does not exist in %s chain %s\n",
 		Cmd->FirstResidue,Chain[Cn]->PdbIdent,SpaceToDash(Chain[Cn]->Id));
 	exit(1);
       }
@@ -33,7 +33,7 @@ void ContactOrder(CHAIN **Chain, int NChain, COMMAND *Cmd )
     }
     else {
       if( !PdbN2SeqN(Chain[Cn],Cmd->LastResidue,&To) ) {
-	fprintf(stderr,"Residue %s does not exist in %s chain %c\n",
+	fprintf(stderr,"Residue %s does not exist in %s chain %s\n",
 		Cmd->LastResidue,Chain[Cn]->PdbIdent,SpaceToDash(Chain[Cn]->Id));
 	exit(1);
       }
@@ -59,7 +59,7 @@ void ContactOrder(CHAIN **Chain, int NChain, COMMAND *Cmd )
     CO = 100.0*CO/NumberOfContacts;
     CO /= (To-From+1);
     
-    printf("%s %c %d ( %s ) %d ( %s ) %5.1f\n",
+    printf("%s %s %d ( %s ) %d ( %s ) %5.1f\n",
 	   Chain[Cn]->PdbIdent,SpaceToDash(Chain[Cn]->Id),From,PDB_Start,To-1,PDB_End,CO);
   }
   exit(0);

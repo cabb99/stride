@@ -33,12 +33,24 @@ int PdbN2SeqN(CHAIN *Chain, char *PdbN, int *SeqN)
 *************************************************************************/
 int FindAtom(CHAIN *Chain, int ResNumb, char *Atom, int *AtNumb)
 {
+    if (ResNumb < 0 || ResNumb > Chain->NRes) {
+    printf("ERROR: Invalid residue number: %d\n", ResNumb);
+    return NULL;
+    }
 
+    if (Chain->Rsd[ResNumb]->NAtom == 0) {
+        printf("ERROR: Residue %d has no Atom list\n", ResNumb);
+        return NULL;
+    }
+
+//   fprintf(stderr, "FindAtom: %s %d %s ", Chain->Rsd[ResNumb]->ResType, ResNumb, Atom);
   for( (*AtNumb)=0; (*AtNumb)<Chain->Rsd[ResNumb]->NAtom; (*AtNumb)++ )
-    if( !strcmp(Atom,Chain->Rsd[ResNumb]->AtomType[(*AtNumb)]) )
+    if( !strcmp(Atom,Chain->Rsd[ResNumb]->AtomType[(*AtNumb)]) ){
+    //    fprintf(stderr, "Found %d\n", *AtNumb);
        return(SUCCESS);
-
+    }
   *AtNumb = ERR;
+//   fprintf(stderr, "Not found\n");
   return(FAILURE);
 }
 
@@ -88,15 +100,15 @@ int Boundaries(char *Asn, int L, char SecondStr, int (*Bound)[2])
 ** RETURNS: Number of the protein chain with identifier ChainId         **
 **                                                                      **
 *************************************************************************/
-int FindChain(CHAIN **Chain, int NChain, char ChainId)
+int FindChain(CHAIN **Chain, int NChain, char **ChainId)
 {
   register int i;
+  
+  for (int i = 0; i < NChain; i++)
+    if (strcmp(Chain[i]->Id, ChainId) == 0) 
+      return i;
 
-  for( i=0; i<NChain; i++ )
-    if( Chain[i]->Id == ChainId )
-      return(i);
-
-  return(ERR);
+  return ERR;
 }
 
 BOOLEAN IsHydrogen(char *AtomName) 
@@ -145,38 +157,22 @@ char *Translate(char Code)
 
 }
 
-char SpaceToDash(char Id)
-{
-  static char NewId;
-
-  if( Id == ' ' )
-    NewId = '-';
-  else
-    NewId = Id;
-
-  return(NewId);
-}
-
-char *SpaceToDash2(char *Id) {
-    // Allocate memory for NewId with fixed size MAX_CHAINID
-    char *NewId = (char *)malloc(MAX_CHAINID * sizeof(char));
+char *SpaceToDash(char *Id) {
+    size_t len = strlen(Id);
+    char *NewId = malloc(len + 1); // exactly the needed size
     if (!NewId) {
         perror("Memory allocation failed");
-        exit(1); // Handle memory allocation failure as needed
+        exit(1);
     }
 
-    // Copy and transform each character
-    for (int i = 0; i < MAX_CHAINID - 1 && Id[i] != '\0'; i++) {
-        if (Id[i] == ' ')
-            NewId[i] = '-';
-        else
-            NewId[i] = Id[i];
+    for (size_t i = 0; i < len; i++) {
+        NewId[i] = (Id[i] == ' ') ? '-' : Id[i];
     }
+    NewId[len] = '\0';
 
-    // Null-terminate the new string at MAX_CHAINID - 1
-    NewId[MAX_CHAINID - 1] = '\0';
     return NewId;
 }
+
 
 BOOLEAN ChInStr(char *String, char Char)
 {

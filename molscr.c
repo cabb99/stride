@@ -47,17 +47,17 @@ int MolScript(CHAIN **Chain, int NChain, COMMAND *Cmd)
 	CoilBound[i][1]++;
     
     for( i=0; i<NHelix; i++ )
-      fprintf(fi,"helix from %c%s to %c%s;\n",
+      fprintf(fi,"helix from %s%s to %s%s;\n",
 	      Chain[Cn]->Id,Chain[Cn]->Rsd[HelixBound[i][0]]->PDB_ResNumb,
 	      Chain[Cn]->Id,Chain[Cn]->Rsd[HelixBound[i][1]]->PDB_ResNumb);
   
     for( i=0; i<NSheet; i++ )
-      fprintf(fi,"strand from %c%s to %c%s;\n",
+      fprintf(fi,"strand from %s%s to %s%s;\n",
 	      Chain[Cn]->Id,Chain[Cn]->Rsd[SheetBound[i][0]]->PDB_ResNumb,
 	      Chain[Cn]->Id,Chain[Cn]->Rsd[SheetBound[i][1]]->PDB_ResNumb);
     
     for( i=0; i<NCoil; i++ )
-      fprintf(fi,"coil from %c%s to %c%s;\n",
+      fprintf(fi,"coil from %s%s to %s%s;\n",
 	      Chain[Cn]->Id,Chain[Cn]->Rsd[CoilBound[i][0]]->PDB_ResNumb,
 	      Chain[Cn]->Id,Chain[Cn]->Rsd[CoilBound[i][1]]->PDB_ResNumb);
   }
