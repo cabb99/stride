@@ -33,24 +33,24 @@ int PdbN2SeqN(CHAIN *Chain, char *PdbN, int *SeqN)
 *************************************************************************/
 int FindAtom(CHAIN *Chain, int ResNumb, char *Atom, int *AtNumb)
 {
-    if (ResNumb < 0 || ResNumb > Chain->NRes) {
+  if (ResNumb < 0 || ResNumb > Chain->NRes) {
     printf("ERROR: Invalid residue number: %d\n", ResNumb);
-    return NULL;
-    }
+    *AtNumb = ERR;
+    return(FAILURE);
+  }
 
-    if (Chain->Rsd[ResNumb]->NAtom == 0) {
-        printf("ERROR: Residue %d has no Atom list\n", ResNumb);
-        return NULL;
-    }
+  if (Chain->Rsd[ResNumb]->NAtom == 0) {
+    printf("ERROR: Residue %d has no Atom list\n", ResNumb);
+    *AtNumb = ERR;
+    return(FAILURE);
+  }
 
-//   fprintf(stderr, "FindAtom: %s %d %s ", Chain->Rsd[ResNumb]->ResType, ResNumb, Atom);
   for( (*AtNumb)=0; (*AtNumb)<Chain->Rsd[ResNumb]->NAtom; (*AtNumb)++ )
     if( !strcmp(Atom,Chain->Rsd[ResNumb]->AtomType[(*AtNumb)]) ){
-    //    fprintf(stderr, "Found %d\n", *AtNumb);
        return(SUCCESS);
     }
   *AtNumb = ERR;
-//   fprintf(stderr, "Not found\n");
+
   return(FAILURE);
 }
 
@@ -100,7 +100,7 @@ int Boundaries(char *Asn, int L, char SecondStr, int (*Bound)[2])
 ** RETURNS: Number of the protein chain with identifier ChainId         **
 **                                                                      **
 *************************************************************************/
-int FindChain(CHAIN **Chain, int NChain, char **ChainId)
+int FindChain(CHAIN **Chain, int NChain, char *ChainId)
 {
   register int i;
   
@@ -155,6 +155,13 @@ char *Translate(char Code)
   default:  return(Dictionary[17]);
   }
 
+}
+
+char *SpaceToDashChar(char Id) {
+    char temp[2];
+    temp[0] = Id; 
+    temp[1] = '\0'; 
+    return SpaceToDash(temp);
 }
 
 char *SpaceToDash(char *Id) {

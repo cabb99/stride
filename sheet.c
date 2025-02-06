@@ -227,7 +227,7 @@ int Link(HBOND **HBond, CHAIN **Chain, int Cn1, int Cn2, RESIDUE *Res1_1,
   }
 
   if( Cmd->Info && Flag ) {
-    fprintf(stdout,"%s %c: %3s %c: %3s | %c: %3s %c: %3s | ",
+    fprintf(stdout,"%s %s: %3s %s: %3s | %s: %3s %s: %3s | ",
 	    Text,
 	    Chain[Cn1]->Id,Res1_1->PDB_ResNumb,
 	    Chain[Cn2]->Id,Res1_2->PDB_ResNumb,
@@ -274,7 +274,7 @@ void PrintPatterns(PATTERN **Pat, int NPat, CHAIN **Chain, int Cn1, int Cn2)
     D2 = Pat[i]->Hb2->Dnr->D_Res;
     A2 = Pat[i]->Hb2->Acc->A_Res;
     
-    fprintf(stdout,"%3d %c %c ",
+    fprintf(stdout,"%3d %s %s ",
 	    i,Pat[i]->Hb1->Dnr->Chain->Id,Pat[i]->Hb2->Dnr->Chain->Id);
     if( Pat[i]->Hb1->Dnr->Chain->Id == Chain[Cn1]->Id )
       fprintf(stdout,"%3s(%3d) %3s(%3d) %3s(%3d) %3s(%3d)",
@@ -295,7 +295,7 @@ void PrintPatterns(PATTERN **Pat, int NPat, CHAIN **Chain, int Cn1, int Cn2)
       D2 = Pat[i]->Nei1->Hb2->Dnr->D_Res;
       A2 = Pat[i]->Nei1->Hb2->Acc->A_Res;
       
-      fprintf(stdout," N1 %c %c ",
+      fprintf(stdout," N1 %s %s ",
 	      Pat[i]->Nei1->Hb1->Dnr->Chain->Id,Pat[i]->Nei1->Hb2->Dnr->Chain->Id);
       if( Pat[i]->Nei1->Hb1->Dnr->Chain->Id == Chain[Cn1]->Id )
 	fprintf(stdout,"%3s(%3d) %3s(%3d) %3s(%3d) %3s(%3d) ",
@@ -316,7 +316,7 @@ void PrintPatterns(PATTERN **Pat, int NPat, CHAIN **Chain, int Cn1, int Cn2)
       A1 = Pat[i]->Nei2->Hb1->Acc->A_Res;
       D2 = Pat[i]->Nei2->Hb2->Dnr->D_Res;
       A2 = Pat[i]->Nei2->Hb2->Acc->A_Res;
-      fprintf(stdout," N2 %c %c ",
+      fprintf(stdout," N2 %s %s ",
 	      Pat[i]->Nei2->Hb1->Dnr->Chain->Id,Pat[i]->Nei2->Hb2->Dnr->Chain->Id);
       if( Pat[i]->Nei2->Hb1->Dnr->Chain->Id == Chain[Cn1]->Id )
 	fprintf(stdout,"%3s(%3d) %3s(%3d) %3s(%3d) %3s(%3d) ",

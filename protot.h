@@ -9,6 +9,7 @@ FILE *efopen(char *file, char *mode, char *progname);
 char **AllocAsn(CHAIN **Chain, int NChain);
 char **CharMatrix(int M, int N);
 char *OneToThree(char One);
+char *SpaceToDashChar(char Id);
 char *SpaceToDash(char *Id);
 char *Tim(void);
 char ThreeToOne(char *Three);
@@ -49,7 +50,7 @@ int escape(int RetVal, char *format, ... );
 int FindAcc(CHAIN *Chain, ACCEPTOR **Acc, int *NAcc, COMMAND *Cmd);
 int FindAtom(CHAIN *Chain, int ResNumb, char *Atom, int *AtNumb);
 int FindBnd(HBOND **HBond, RESIDUE *Res1, RESIDUE *Res2);
-int FindChain(CHAIN **Chain, int NChain, char **ChainId);
+int FindChain(CHAIN **Chain, int NChain, char *ChainId);
 int FindDnr(CHAIN *Chain, DONOR **Dnr, int *NDnr, COMMAND *Cmd);
 int FindHydrogenBonds(CHAIN **Chain, int NChain, HBOND **HBond, COMMAND *Cmd);
 int FindPolInt(HBOND **HBond, RESIDUE *Res1, RESIDUE *Res2);
@@ -62,10 +63,10 @@ int Link(HBOND **HBond, CHAIN **Chain, int Cn1, int Cn2, RESIDUE *Res1_1,
 	 RESIDUE *Res1_2, RESIDUE *Res2_2, RESIDUE *Res2_1, RESIDUE *CRes1, RESIDUE *CRes2,
 	 float **PhiPsiMap, PATTERN **Pattern, int *NumPat, char *Text, float Treshold, 
 	 COMMAND *Cmd, int Test);
-int MakeEnds(int *Beg1, int ResBeg1, int NeiBeg1, char *Beg1Cn, char ResBeg1Cn, 
-		    int *End1, int ResEnd1, int NeiEnd1, char ResEnd1Cn, int *Beg2, 
-		    int ResBeg2, int NeiBeg2, char *Beg2Cn, char ResBeg2Cn, int *End2, 
-		    int ResEnd2, int NeiEnd2, char ResEnd2Cn, PATTERN **Pat, int NPat);
+int MakeEnds(int *Beg1, int ResBeg1, int NeiBeg1, char *Beg1Cn, char *ResBeg1Cn, 
+		    int *End1, int ResEnd1, int NeiEnd1, char *ResEnd1Cn, int *Beg2, 
+		    int ResBeg2, int NeiBeg2, char *Beg2Cn, char *ResBeg2Cn, int *End2, 
+		    int ResEnd2, int NeiEnd2, char *ResEnd2Cn, PATTERN **Pat, int NPat);
 int MolScript(CHAIN **Chain, int NChain, COMMAND *Cmd);
 int Near(int Res1, int Res2, int Res3, int Res4, int Res5, int Res6, int Res7, int Res8,
 	 char Cn1, char Cn2, char Cn3, char Cn4, int *DistBest, int *DistWorst);

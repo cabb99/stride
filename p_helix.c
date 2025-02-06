@@ -6,10 +6,10 @@ int Process_HELIX(BUFFER Buffer, CHAIN **Chain, int *ChainNumber, COMMAND *Cmd)
   char *Field[MAX_FIELD];
   BUFFER Tmp;
 
-  if( Cmd->NActive && !ChInStr(Cmd->Active,SpaceToDash(Buffer[19])) )
+  if( Cmd->NActive && !ChInStr(Cmd->Active,SpaceToDashChar(Buffer[19])[0]) )
      return(SUCCESS);
      
-  for( CC=0; CC < *ChainNumber && Chain[CC]->Id != Buffer[19]; CC++ );
+  for( CC=0; CC < *ChainNumber && Chain[CC]->Id[0] != Buffer[19]; CC++ );
 
   if( CC == *ChainNumber ) {
     InitChain(&Chain[CC]); 

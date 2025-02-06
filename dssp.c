@@ -63,7 +63,7 @@ int ReadDSSP(CHAIN **Chain, DSSP **Dssp, COMMAND *Cmd)
   ChainNumber++;
 
   for( i=0; i<ChainNumber; i++ ) 
-    Dssp[i]->Id = SpaceToDash(Dssp[i]->Id);
+    Dssp[i]->Id = SpaceToDashChar(Dssp[i]->Id)[0];
 
   return(ChainNumber);
 }
@@ -179,11 +179,11 @@ void GetDsspAsn(CHAIN **Chain, int NChain, COMMAND *Cmd)
       continue;
     
     for( DsspCn=0; DsspCn<NDsspChain; DsspCn++ )
-      if( SpaceToDash(Chain[Cn]->Id) == Dssp[DsspCn]->Id )
+      if( SpaceToDash(Chain[Cn]->Id)[0] == Dssp[DsspCn]->Id )
 	break;
 
     if( DsspCn == NDsspChain ) {
-      fprintf(stderr,"No DSSP chain corresponding to %s%c\n",
+      fprintf(stderr,"No DSSP chain corresponding to %s%s\n",
 	      Chain[Cn]->File,SpaceToDash(Chain[Cn]->Id));
       continue;
     }

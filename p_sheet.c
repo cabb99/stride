@@ -7,10 +7,10 @@ int Process_SHEET(BUFFER Buffer, CHAIN **Chain, int *ChainNumber, COMMAND *Cmd)
   BUFFER Tmp;
   static char PreviousChain, PreviousSheetId[RES_FIELD];
 
-  if( Cmd->NActive && !ChInStr(Cmd->Active,SpaceToDash(Buffer[21])) )
+  if( Cmd->NActive && !ChInStr(Cmd->Active,SpaceToDashChar(Buffer[21])[0]) )
      return(SUCCESS);
 
-  for( CC=0; CC < *ChainNumber && Chain[CC]->Id != Buffer[21]; CC++ );
+  for( CC=0; CC < *ChainNumber && Chain[CC]->Id[0] != Buffer[21]; CC++ );
 
   if( CC == *ChainNumber ) {
     InitChain(&Chain[CC]); 

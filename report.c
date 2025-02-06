@@ -95,7 +95,7 @@ void ReportSummary(CHAIN **Chain, int NChain, FILE *Out, COMMAND *Cmd)
 
     strncpy(Tmp1,Chain[Cn]->File,40);
     Tmp1[40] = '\0';
-    sprintf(Tmp,"CHN  %s %c",Tmp1,SpaceToDash(Chain[Cn]->Id));
+    sprintf(Tmp,"CHN  %s %s",Tmp1,SpaceToDash(Chain[Cn]->Id));
     Glue(Bf,Tmp,Out);
 
     NBlocks = Chain[Cn]->NRes/Width;

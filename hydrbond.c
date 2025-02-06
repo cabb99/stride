@@ -453,7 +453,7 @@ int FindHydrogenBonds(CHAIN **Chain, int NChain, HBOND **HBond, COMMAND *Cmd)
 	    Chain[ccd]->Rsd[Dnr[dc]->D_Res]->Inv->
 	      HBondDnr[Chain[ccd]->Rsd[Dnr[dc]->D_Res]->Inv->NBondDnr++] = hc;
 	  else
-	    fprintf(stderr,"Residue %s %s of chain %s%c is involved in %d hydrogen bonds (%d are allowed)\n",
+	    fprintf(stderr,"Residue %s %s of chain %s%s is involved in %d hydrogen bonds (%d are allowed)\n",
 		Chain[ccd]->Rsd[Dnr[dc]->D_Res]->ResType,
 		Chain[ccd]->Rsd[Dnr[dc]->D_Res]->PDB_ResNumb,
 		Chain[ccd]->File,SpaceToDash(Chain[ccd]->Id),
@@ -464,7 +464,7 @@ int FindHydrogenBonds(CHAIN **Chain, int NChain, HBOND **HBond, COMMAND *Cmd)
 	    Chain[cca]->Rsd[Acc[ac]->A_Res]->Inv->
 	      HBondAcc[Chain[cca]->Rsd[Acc[ac]->A_Res]->Inv->NBondAcc++] = hc;
 	  else
-	    fprintf(stderr,"Residue %s %s of chain %s%c is involved in %d hydrogen bonds (%d are allowed)\n",
+	    fprintf(stderr,"Residue %s %s of chain %s%s is involved in %d hydrogen bonds (%d are allowed)\n",
 		Chain[cca]->Rsd[Acc[ac]->A_Res]->ResType,
 		Chain[cca]->Rsd[Acc[ac]->A_Res]->PDB_ResNumb,
 		Chain[cca]->File,SpaceToDash(Chain[cca]->Id),
@@ -515,7 +515,7 @@ int FindHydrogenBonds(CHAIN **Chain, int NChain, HBOND **HBond, COMMAND *Cmd)
 void PrintHydrBond(char *Text, HBOND *HBond)
 {
 
-  fprintf(stdout,"HB %s %20s %3s %4s %4d %c <> %3s %4s %4d %c ",Text,
+  fprintf(stdout,"HB %s %20s %3s %4s %4d %s <> %3s %4s %4d %s ",Text,
 	  HBond->Dnr->Chain->File,
 	  HBond->Dnr->Chain->Rsd[HBond->Dnr->D_Res]->ResType,
 	  HBond->Dnr->Chain->Rsd[HBond->Dnr->D_Res]->PDB_ResNumb,

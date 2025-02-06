@@ -6,7 +6,8 @@ void FillAsnAntiPar(char *Asn1, char *Asn2, CHAIN **Chain, int Cn1, int Cn2,
   register int i, j;
   int Beg1, Beg2, End1, End2;
   int B1D, B1A, B2D, B2A, E1D, E1A, E2D, E2A;
-  char B1DCn, B1ACn, B2DCn, B2ACn, E1DCn, E1ACn, E2DCn, E2ACn, Beg1Cn, Beg2Cn; 
+  char B1DCn[MAX_CHAINID], B1ACn[MAX_CHAINID], B2DCn[MAX_CHAINID], B2ACn[MAX_CHAINID], E1DCn[MAX_CHAINID], E1ACn[MAX_CHAINID], E2DCn[MAX_CHAINID], E2ACn[MAX_CHAINID], Beg1Cn[MAX_CHAINID], Beg2Cn[MAX_CHAINID];
+  
   PATTERN *CurrPat, *PrevPat;;
 
   for( i=0; i<NPat; i++ ) {
@@ -73,62 +74,62 @@ void FillAsnAntiPar(char *Asn1, char *Asn2, CHAIN **Chain, int Cn1, int Cn2,
 	    Chain[Cn2]->Rsd[CurrPat->Hb2->Acc->A_Res]->PDB_ResNumb);
     }
 
-    Alias(&B1D,&B1A,&B2D,&B2A,&B1DCn,&B1ACn,&B2DCn,&B2ACn,Pat[i]);
-    Alias(&E1D,&E1A,&E2D,&E2A,&E1DCn,&E1ACn,&E2DCn,&E2ACn,CurrPat);
+    Alias(&B1D,&B1A,&B2D,&B2A,B1DCn,B1ACn,B2DCn,B2ACn,Pat[i]);
+    Alias(&E1D,&E1A,&E2D,&E2A,E1DCn,E1ACn,E2DCn,E2ACn,CurrPat);
 
     if( (Cn1 != Cn2 || E1D - B2A <  E2D - B2A ) &&
-        ( MakeEnds(&Beg1,B1D,B2A,&Beg1Cn,B1DCn,&End1,E2A,E1D,E2ACn,&Beg2,E2D,E1A,&Beg2Cn,E2DCn,
+        ( MakeEnds(&Beg1,B1D,B2A,Beg1Cn,B1DCn,&End1,E2A,E1D,E2ACn,&Beg2,E2D,E1A,Beg2Cn,E2DCn,
 		   &End2,B1A,B2D,B1ACn,Pat,NPat) ||
-          MakeEnds(&Beg1,B1D,B2A,&Beg1Cn,B1DCn,&End1,E1D,E2A,E1DCn,&Beg2,E1A,E2D,&Beg2Cn,E1ACn,
+          MakeEnds(&Beg1,B1D,B2A,Beg1Cn,B1DCn,&End1,E1D,E2A,E1DCn,&Beg2,E1A,E2D,Beg2Cn,E1ACn,
 		   &End2,B1A,B2D,B1ACn,Pat,NPat) ) )
       ;
     else
     if( ( Cn1 != Cn2 || E2D - B2A <  E1D - B2A ) && 
-        ( MakeEnds(&Beg1,B1D,B2A,&Beg1Cn,B1DCn,&End1,E1A,E2D,E1ACn,&Beg2,E1D,E2A,&Beg2Cn,E1DCn,
+        ( MakeEnds(&Beg1,B1D,B2A,Beg1Cn,B1DCn,&End1,E1A,E2D,E1ACn,&Beg2,E1D,E2A,Beg2Cn,E1DCn,
 		   &End2,B1A,B2D,B1ACn,Pat,NPat) ||
-          MakeEnds(&Beg1,B1D,B2A,&Beg1Cn,B1DCn,&End1,E2D,E1A,E2DCn,&Beg2,E2A,E1D,&Beg2Cn,E2ACn,
+          MakeEnds(&Beg1,B1D,B2A,Beg1Cn,B1DCn,&End1,E2D,E1A,E2DCn,&Beg2,E2A,E1D,Beg2Cn,E2ACn,
 		   &End2,B1A,B2D,B1ACn,Pat,NPat) ) )
       ;
     else
     if( ( Cn1 != Cn2 || B2A - E1D < B2A - E2D ) && 
-        ( MakeEnds(&Beg1,B1A,B2D,&Beg1Cn,B1ACn,&End1,E2D,E1A,E2DCn,&Beg2,E2A,E1D,&Beg2Cn,E2ACn,
+        ( MakeEnds(&Beg1,B1A,B2D,Beg1Cn,B1ACn,&End1,E2D,E1A,E2DCn,&Beg2,E2A,E1D,Beg2Cn,E2ACn,
 		   &End2,B1D,B2A,B1DCn,Pat,NPat) ||
-          MakeEnds(&Beg1,B1A,B2D,&Beg1Cn,B1ACn,&End1,E1A,E2D,E1ACn,&Beg2,E1D,E2A,&Beg2Cn,E1DCn,
+          MakeEnds(&Beg1,B1A,B2D,Beg1Cn,B1ACn,&End1,E1A,E2D,E1ACn,&Beg2,E1D,E2A,Beg2Cn,E1DCn,
 		   &End2,B1D,B2A,B1DCn,Pat,NPat) ) )
       ;
     else
     if( ( Cn1 != Cn2 || B2A - E2D < B2A - E1D ) && 
-        ( MakeEnds(&Beg1,B1A,B2D,&Beg1Cn,B1ACn,&End1,E1D,E2A,E1DCn,&Beg2,E1A,E2D,&Beg2Cn,E1ACn,
+        ( MakeEnds(&Beg1,B1A,B2D,Beg1Cn,B1ACn,&End1,E1D,E2A,E1DCn,&Beg2,E1A,E2D,Beg2Cn,E1ACn,
 		   &End2,B1D,B2A,B1DCn,Pat,NPat) ||
-          MakeEnds(&Beg1,B1A,B2D,&Beg1Cn,B1ACn,&End1,E2A,E1D,E2ACn,&Beg2,E2D,E1A,&Beg2Cn,E2DCn,
+          MakeEnds(&Beg1,B1A,B2D,Beg1Cn,B1ACn,&End1,E2A,E1D,E2ACn,&Beg2,E2D,E1A,Beg2Cn,E2DCn,
 		   &End2,B1D,B2A,B1DCn,Pat,NPat) ) )
       ;
     else
     if( ( Cn1 != Cn2 || B1D - E2A <  B2D - E2A ) && 
-        ( MakeEnds(&Beg1,E1D,E2A,&Beg1Cn,E1DCn,&End1,B2A,B1D,B2ACn,&Beg2,B2D,B1A,&Beg2Cn,B2DCn,
+        ( MakeEnds(&Beg1,E1D,E2A,Beg1Cn,E1DCn,&End1,B2A,B1D,B2ACn,&Beg2,B2D,B1A,Beg2Cn,B2DCn,
 		   &End2,E1A,E2D,E1ACn,Pat,NPat) ||
-          MakeEnds(&Beg1,E1D,E2A,&Beg1Cn,E1DCn,&End1,B1D,B2A,B1DCn,&Beg2,B1A,B2D,&Beg2Cn,B1ACn,
+          MakeEnds(&Beg1,E1D,E2A,Beg1Cn,E1DCn,&End1,B1D,B2A,B1DCn,&Beg2,B1A,B2D,Beg2Cn,B1ACn,
 		   &End2,E1A,E2D,E1ACn,Pat,NPat) ) )
       ;
     else
     if( ( Cn1 != Cn2 || B2D - E2A <  B1D - E2A ) && 
-        ( MakeEnds(&Beg1,E1D,E2A,&Beg1Cn,E1DCn,&End1,B1A,B2D,B1ACn,&Beg2,B1D,B2A,&Beg2Cn,B1DCn,
+        ( MakeEnds(&Beg1,E1D,E2A,Beg1Cn,E1DCn,&End1,B1A,B2D,B1ACn,&Beg2,B1D,B2A,Beg2Cn,B1DCn,
 		   &End2,E1A,E2D,E1ACn,Pat,NPat) ||
-          MakeEnds(&Beg1,E1D,E2A,&Beg1Cn,E1DCn,&End1,B2D,B1A,B2DCn,&Beg2,B2A,B1D,&Beg2Cn,B2ACn,
+          MakeEnds(&Beg1,E1D,E2A,Beg1Cn,E1DCn,&End1,B2D,B1A,B2DCn,&Beg2,B2A,B1D,Beg2Cn,B2ACn,
 		   &End2,E1A,E2D,E1ACn,Pat,NPat) ) )
       ;
     else
     if( ( Cn1 != Cn2 || E2A - B1D < E2A - B2D ) && 
-        ( MakeEnds(&Beg1,E1A,E2D,&Beg1Cn,E1ACn,&End1,B2D,B1A,B2DCn,&Beg2,B2A,B1D,&Beg2Cn,B2ACn,
+        ( MakeEnds(&Beg1,E1A,E2D,Beg1Cn,E1ACn,&End1,B2D,B1A,B2DCn,&Beg2,B2A,B1D,Beg2Cn,B2ACn,
 		   &End2,E1D,E2A,E1DCn,Pat,NPat) ||
-          MakeEnds(&Beg1,E1A,E2D,&Beg1Cn,E1ACn,&End1,B1A,B2D,B1ACn,&Beg2,B1D,B2A,&Beg2Cn,B1DCn,
+          MakeEnds(&Beg1,E1A,E2D,Beg1Cn,E1ACn,&End1,B1A,B2D,B1ACn,&Beg2,B1D,B2A,Beg2Cn,B1DCn,
 		   &End2,E1D,E2A,E1DCn,Pat,NPat) ) )
       ;
     else
     if( ( Cn1 != Cn2 || E2A - B2D < E2A - B1D ) && 
-        ( MakeEnds(&Beg1,E1A,E2D,&Beg1Cn,E1ACn,&End1,B1D,B2A,B1DCn,&Beg2,B1A,B2D,&Beg2Cn,B1ACn,
+        ( MakeEnds(&Beg1,E1A,E2D,Beg1Cn,E1ACn,&End1,B1D,B2A,B1DCn,&Beg2,B1A,B2D,Beg2Cn,B1ACn,
 		   &End2,E1D,E2A,E1DCn,Pat,NPat) ||
-          MakeEnds(&Beg1,E1A,E2D,&Beg1Cn,E1ACn,&End1,B2A,B1D,B2ACn,&Beg2,B2D,B1A,&Beg2Cn,B2DCn,
+          MakeEnds(&Beg1,E1A,E2D,Beg1Cn,E1ACn,&End1,B2A,B1D,B2ACn,&Beg2,B2D,B1A,Beg2Cn,B2DCn,
 		   &End2,E1D,E2A,E1DCn,Pat,NPat) ) )
       ;
     else {
@@ -137,7 +138,7 @@ void FillAsnAntiPar(char *Asn1, char *Asn2, CHAIN **Chain, int Cn1, int Cn2,
     }
 
 
-    if( Beg1Cn == Chain[Cn1]->Id ) {
+    if( strcmp(Beg1Cn, Chain[Cn1]->Id) ) {
       for( j=Beg1; j<=End1; j++ ) 
 	Asn1[j] = 'N';
       for( j=Beg2; j<=End2; j++ ) 
@@ -165,7 +166,7 @@ void FillAsnPar(char *Asn1, char *Asn2, CHAIN **Chain, int Cn1, int Cn2,
   register int i, j;
   int Beg1, Beg2, End1, End2;
   int B1D, B1A, B2D, B2A, E1D, E1A, E2D, E2A; 
-  char B1DCn, B1ACn, B2DCn, B2ACn, E1DCn, E1ACn, E2DCn, E2ACn, Beg1Cn, Beg2Cn; 
+  char B1DCn[MAX_CHAINID], B1ACn[MAX_CHAINID], B2DCn[MAX_CHAINID], B2ACn[MAX_CHAINID], E1DCn[MAX_CHAINID], E1ACn[MAX_CHAINID], E2DCn[MAX_CHAINID], E2ACn[MAX_CHAINID], Beg1Cn[MAX_CHAINID], Beg2Cn[MAX_CHAINID];
   PATTERN *CurrPat, *PrevPat;;
 
   for( i=0; i<NPat; i++ ) {
@@ -212,7 +213,7 @@ void FillAsnPar(char *Asn1, char *Asn2, CHAIN **Chain, int Cn1, int Cn2,
     if( Cmd->Info ) {
       fprintf(stdout,"To: %s %s ",
 	      CurrPat->Hb1->Dnr->Chain->Id,CurrPat->Hb2->Dnr->Chain->Id);
-      if( CurrPat->Hb1->Dnr->Chain->Id == Chain[Cn1]->Id )
+      if( strcmp(CurrPat->Hb1->Dnr->Chain->Id, Chain[Cn1]->Id ))
 	fprintf(stdout,"%s %s %s %s \n",
 	    Chain[Cn1]->Rsd[CurrPat->Hb1->Dnr->D_Res]->PDB_ResNumb,
 	    Chain[Cn2]->Rsd[CurrPat->Hb1->Acc->A_Res]->PDB_ResNumb,
@@ -226,62 +227,62 @@ void FillAsnPar(char *Asn1, char *Asn2, CHAIN **Chain, int Cn1, int Cn2,
 	    Chain[Cn2]->Rsd[CurrPat->Hb2->Acc->A_Res]->PDB_ResNumb);
     }
 
-    Alias(&B1D,&B1A,&B2D,&B2A,&B1DCn,&B1ACn,&B2DCn,&B2ACn,Pat[i]);
-    Alias(&E1D,&E1A,&E2D,&E2A,&E1DCn,&E1ACn,&E2DCn,&E2ACn,CurrPat);
+    Alias(&B1D,&B1A,&B2D,&B2A,B1DCn,B1ACn,B2DCn,B2ACn,Pat[i]);
+    Alias(&E1D,&E1A,&E2D,&E2A,E1DCn,E1ACn,E2DCn,E2ACn,CurrPat);
 
     if( ( Cn1 != Cn2 || abs(E1D-B2A) < abs(E2D-B2A) ) && 
-        ( MakeEnds(&Beg1,B1D,B2A,&Beg1Cn,B1DCn,&End1,E2A,E1D,E2ACn,&Beg2,B1A,B2D,&Beg2Cn,B1ACn,
+        ( MakeEnds(&Beg1,B1D,B2A,Beg1Cn,B1DCn,&End1,E2A,E1D,E2ACn,&Beg2,B1A,B2D,Beg2Cn,B1ACn,
 		   &End2,E2D,E1A,E2DCn,Pat,NPat) ||
-          MakeEnds(&Beg1,B1D,B2A,&Beg1Cn,B1DCn,&End1,E1D,E2A,E1DCn,&Beg2,B1A,B2D,&Beg2Cn,B1ACn,
+          MakeEnds(&Beg1,B1D,B2A,Beg1Cn,B1DCn,&End1,E1D,E2A,E1DCn,&Beg2,B1A,B2D,Beg2Cn,B1ACn,
 		   &End2,E1A,E2D,E1ACn,Pat,NPat) ) )
       ;
     else
     if( ( Cn1 != Cn2 || abs(E2D-B2A) < abs(E1D-B2A) ) && 
-        ( MakeEnds(&Beg1,B1D,B2A,&Beg1Cn,B1DCn,&End1,E1A,E2D,E1ACn,&Beg2,B1A,B2D,&Beg2Cn,B1ACn,
+        ( MakeEnds(&Beg1,B1D,B2A,Beg1Cn,B1DCn,&End1,E1A,E2D,E1ACn,&Beg2,B1A,B2D,Beg2Cn,B1ACn,
 		   &End2,E1D,E2A,E1DCn,Pat,NPat) ||
-          MakeEnds(&Beg1,B1D,B2A,&Beg1Cn,B1DCn,&End1,E2D,E1A,E2DCn,&Beg2,B1A,B2D,&Beg2Cn,B1ACn,
+          MakeEnds(&Beg1,B1D,B2A,Beg1Cn,B1DCn,&End1,E2D,E1A,E2DCn,&Beg2,B1A,B2D,Beg2Cn,B1ACn,
 		   &End2,E2A,E1D,E2ACn,Pat,NPat) ) )
       ;
     else
     if( ( Cn1 != Cn2 || abs(B2A-E1D) < abs(B2A-E2D) ) && 
-        ( MakeEnds(&Beg1,B1A,B2D,&Beg1Cn,B1ACn,&End1,E2D,E1A,E2DCn,&Beg2,B1D,B2A,&Beg2Cn,B1DCn,
+        ( MakeEnds(&Beg1,B1A,B2D,Beg1Cn,B1ACn,&End1,E2D,E1A,E2DCn,&Beg2,B1D,B2A,Beg2Cn,B1DCn,
 		   &End2,E2A,E1D,E2ACn,Pat,NPat) ||
-          MakeEnds(&Beg1,B1A,B2D,&Beg1Cn,B1ACn,&End1,E1A,E2D,E1ACn,&Beg2,B1D,B2A,&Beg2Cn,B1DCn,
+          MakeEnds(&Beg1,B1A,B2D,Beg1Cn,B1ACn,&End1,E1A,E2D,E1ACn,&Beg2,B1D,B2A,Beg2Cn,B1DCn,
 		   &End2,E1D,E2A,E1DCn,Pat,NPat) ) )
       ;
     else
     if( ( Cn1 != Cn2 || abs(B2A-E2D) < abs(B2A-E1D) ) && 
-        ( MakeEnds(&Beg1,B1A,B2D,&Beg1Cn,B1ACn,&End1,E1D,E2A,E1DCn,&Beg2,B1D,B2A,&Beg2Cn,B1DCn,
+        ( MakeEnds(&Beg1,B1A,B2D,Beg1Cn,B1ACn,&End1,E1D,E2A,E1DCn,&Beg2,B1D,B2A,Beg2Cn,B1DCn,
 		   &End2,E1A,E2D,E1ACn,Pat,NPat) ||
-          MakeEnds(&Beg1,B1A,B2D,&Beg1Cn,B1ACn,&End1,E2A,E1D,E2ACn,&Beg2,B1D,B2A,&Beg2Cn,B1DCn,
+          MakeEnds(&Beg1,B1A,B2D,Beg1Cn,B1ACn,&End1,E2A,E1D,E2ACn,&Beg2,B1D,B2A,Beg2Cn,B1DCn,
 		   &End2,E2D,E1A,E2DCn,Pat,NPat) ) )
       ;
     else
     if( ( Cn1 != Cn2 || abs(B1D-E2A) < abs(B2D-E2A) ) && 
-        ( MakeEnds(&Beg1,E1D,E2A,&Beg1Cn,E1DCn,&End1,B2A,B1D,B2ACn,&Beg2,E1A,E2D,&Beg2Cn,E1ACn,
+        ( MakeEnds(&Beg1,E1D,E2A,Beg1Cn,E1DCn,&End1,B2A,B1D,B2ACn,&Beg2,E1A,E2D,Beg2Cn,E1ACn,
 		   &End2,B2D,B1A,B2DCn,Pat,NPat) ||
-          MakeEnds(&Beg1,E1D,E2A,&Beg1Cn,E1DCn,&End1,B1D,B2A,B1DCn,&Beg2,E1A,E2D,&Beg2Cn,E1ACn,
+          MakeEnds(&Beg1,E1D,E2A,Beg1Cn,E1DCn,&End1,B1D,B2A,B1DCn,&Beg2,E1A,E2D,Beg2Cn,E1ACn,
 		   &End2,B1A,B2D,B1ACn,Pat,NPat) ) )
       ;
     else
     if( ( Cn1 != Cn2 || abs(B2D-E2A) < abs(B1D-E2A) ) && 
-        ( MakeEnds(&Beg1,E1D,E2A,&Beg1Cn,E1DCn,&End1,B1A,B2D,B1ACn,&Beg2,E1A,E2D,&Beg2Cn,E1ACn,
+        ( MakeEnds(&Beg1,E1D,E2A,Beg1Cn,E1DCn,&End1,B1A,B2D,B1ACn,&Beg2,E1A,E2D,Beg2Cn,E1ACn,
 		   &End2,B1D,B2A,B1DCn,Pat,NPat) ||
-          MakeEnds(&Beg1,E1D,E2A,&Beg1Cn,E1DCn,&End1,B2D,B1A,B2DCn,&Beg2,E1A,E2D,&Beg2Cn,E1ACn,
+          MakeEnds(&Beg1,E1D,E2A,Beg1Cn,E1DCn,&End1,B2D,B1A,B2DCn,&Beg2,E1A,E2D,Beg2Cn,E1ACn,
 		   &End2,B2A,B1D,B2ACn,Pat,NPat) ) )
       ;
     else
     if( ( Cn1 != Cn2 || abs(E2A-B1D) < abs(E2A-B2D) ) && 
-        ( MakeEnds(&Beg1,E1A,E2D,&Beg1Cn,E1ACn,&End1,B2D,B1A,B2DCn,&Beg2,E1D,E2A,&Beg2Cn,E1DCn,
+        ( MakeEnds(&Beg1,E1A,E2D,Beg1Cn,E1ACn,&End1,B2D,B1A,B2DCn,&Beg2,E1D,E2A,Beg2Cn,E1DCn,
 		   &End2,B2A,B1D,B2ACn,Pat,NPat) ||
-          MakeEnds(&Beg1,E1A,E2D,&Beg1Cn,E1ACn,&End1,B1A,B2D,B1ACn,&Beg2,E1D,E2A,&Beg2Cn,E1DCn,
+          MakeEnds(&Beg1,E1A,E2D,Beg1Cn,E1ACn,&End1,B1A,B2D,B1ACn,&Beg2,E1D,E2A,Beg2Cn,E1DCn,
 		   &End2,B1D,B2A,B1DCn,Pat,NPat) ) )
       ;
     else
     if( ( Cn1 != Cn2 || abs(E2A-B2D) < abs(E2A-B1D) ) && 
-        ( MakeEnds(&Beg1,E1A,E2D,&Beg1Cn,E1ACn,&End1,B1D,B2A,B1DCn,&Beg2,E1D,E2A,&Beg2Cn,E1DCn,
+        ( MakeEnds(&Beg1,E1A,E2D,Beg1Cn,E1ACn,&End1,B1D,B2A,B1DCn,&Beg2,E1D,E2A,Beg2Cn,E1DCn,
 		   &End2,B1A,B2D,B1ACn,Pat,NPat) ||
-          MakeEnds(&Beg1,E1A,E2D,&Beg1Cn,E1ACn,&End1,B2A,B1D,B2ACn,&Beg2,E1D,E2A,&Beg2Cn,E1DCn,
+          MakeEnds(&Beg1,E1A,E2D,Beg1Cn,E1ACn,&End1,B2A,B1D,B2ACn,&Beg2,E1D,E2A,Beg2Cn,E1DCn,
 		   &End2,B2D,B1A,B2DCn,Pat,NPat) ) )
       ;
     else {
@@ -289,7 +290,7 @@ void FillAsnPar(char *Asn1, char *Asn2, CHAIN **Chain, int Cn1, int Cn2,
       continue;
     }
 
-    if( Beg1Cn == Chain[Cn1]->Id ) {
+    if( strcmp(Beg1Cn, Chain[Cn1]->Id) ) {
       for( j=Beg1; j<=End1; j++ ) Asn1[j] = 'P';
       for( j=Beg2; j<=End2; j++ ) Asn2[j] = 'P';
     }
@@ -307,10 +308,10 @@ void FillAsnPar(char *Asn1, char *Asn2, CHAIN **Chain, int Cn1, int Cn2,
 }
   
 
-int MakeEnds(int *Beg1, int ResBeg1, int NeiBeg1, char *Beg1Cn, char ResBeg1Cn, int *End1, 
-	     int ResEnd1, int NeiEnd1, char ResEnd1Cn, int *Beg2, int ResBeg2, int NeiBeg2, 
-	     char *Beg2Cn, char ResBeg2Cn, int *End2, int ResEnd2, int NeiEnd2, 
-	     char ResEnd2Cn, PATTERN **Pat, int NPat)
+int MakeEnds(int *Beg1, int ResBeg1, int NeiBeg1, char Beg1Cn[], char ResBeg1Cn[], int *End1, 
+	     int ResEnd1, int NeiEnd1, char ResEnd1Cn[], int *Beg2, int ResBeg2, int NeiBeg2, 
+	     char Beg2Cn[], char ResBeg2Cn[], int *End2, int ResEnd2, int NeiEnd2, 
+	     char ResEnd2Cn[], PATTERN **Pat, int NPat)
 {
 
   register int i;
@@ -325,31 +326,33 @@ int MakeEnds(int *Beg1, int ResBeg1, int NeiBeg1, char *Beg1Cn, char ResBeg1Cn, 
     *End1 = ResEnd1;
     *Beg2 = ResBeg2;
     *End2 = ResEnd2;
-    *Beg1Cn = ResBeg1Cn;
-    *Beg2Cn = ResBeg2Cn;
+    strncpy(Beg1Cn, ResBeg1Cn, MAX_CHAINID - 1);
+    Beg1Cn[MAX_CHAINID - 1] = '\0';
+    strncpy(Beg2Cn, ResBeg2Cn, MAX_CHAINID - 1);
+    Beg2Cn[MAX_CHAINID - 1] = '\0';
     
     for( i=0; i<NPat && (Flag1 == 0 || Flag2 == 0); i++ ) {
       if( ( (Pat[i]->Hb1->Dnr->D_Res == (*Beg1) 
 	     && Pat[i]->Hb1->Acc->A_Res == (*End2)
-	     && Pat[i]->Hb1->Dnr->Chain->Id == (*Beg1Cn)
-	     && Pat[i]->Hb1->Acc->Chain->Id == (*Beg2Cn) ) 
+	     && strcmp(Pat[i]->Hb1->Dnr->Chain->Id, Beg1Cn)
+	     && strcmp(Pat[i]->Hb1->Acc->Chain->Id, Beg2Cn) ) 
 	   ||
 	   (Pat[i]->Hb1->Acc->A_Res == (*Beg1) 
 	    && Pat[i]->Hb1->Dnr->D_Res == (*End2) 
-	    && Pat[i]->Hb1->Acc->Chain->Id == (*Beg1Cn)
-	    && Pat[i]->Hb1->Dnr->Chain->Id == (*Beg2Cn) ) ) 
+	    && strcmp(Pat[i]->Hb1->Acc->Chain->Id, Beg1Cn)
+	    && strcmp(Pat[i]->Hb1->Dnr->Chain->Id, Beg2Cn)) ) 
 	 && Pat[i]->Hb1->Dnr->D_Res == Pat[i]->Hb2->Acc->A_Res 
 	 && Pat[i]->Hb2->Dnr->D_Res == Pat[i]->Hb1->Acc->A_Res )
 	Flag1 = 1; 
       if( ( (Pat[i]->Hb1->Dnr->D_Res == (*Beg2) 
 	     && Pat[i]->Hb1->Acc->A_Res == (*End1) 
-	     && Pat[i]->Hb1->Dnr->Chain->Id == (*Beg2Cn)
-	     && Pat[i]->Hb1->Acc->Chain->Id == (*Beg1Cn) ) 
+	     && strcmp(Pat[i]->Hb1->Dnr->Chain->Id, Beg2Cn)
+	     && strcmp(Pat[i]->Hb1->Acc->Chain->Id, Beg1Cn) ) 
 	   ||
 	   (Pat[i]->Hb1->Acc->A_Res == (*Beg2) 
 	    && Pat[i]->Hb1->Dnr->D_Res == (*End1) 
-	    && Pat[i]->Hb1->Acc->Chain->Id == (*Beg2Cn)
-	    && Pat[i]->Hb1->Dnr->Chain->Id == (*Beg1Cn) ) ) 
+	    && strcmp(Pat[i]->Hb1->Acc->Chain->Id, Beg2Cn)
+	    && strcmp(Pat[i]->Hb1->Dnr->Chain->Id, Beg1Cn) ) ) 
 	 && Pat[i]->Hb1->Dnr->D_Res == Pat[i]->Hb2->Acc->A_Res 
 	 && Pat[i]->Hb2->Dnr->D_Res == Pat[i]->Hb1->Acc->A_Res )
 	Flag2 = 1; 
@@ -376,34 +379,34 @@ void FilterAntiPar(PATTERN **Pat, int NPat)
  
   register int i, j;
   int I1A, I1D, I2A, I2D, J1A, J1D, J2A, J2D;
-  char I1ACn, I1DCn, I2ACn, I2DCn, J1ACn, J1DCn, J2ACn, J2DCn;
+  char I1ACn[MAX_CHAINID], I1DCn[MAX_CHAINID], I2ACn[MAX_CHAINID], I2DCn[MAX_CHAINID], J1ACn[MAX_CHAINID], J1DCn[MAX_CHAINID], J2ACn[MAX_CHAINID], J2DCn[MAX_CHAINID];
 
   for( i=0; i<NPat; i++ ) {
     
     if( !Pat[i]->ExistPattern ) continue;
 
-    Alias(&I1D,&I1A,&I2D,&I2A,&I1DCn,&I1ACn,&I2DCn,&I2ACn,Pat[i]);
+    Alias(&I1D,&I1A,&I2D,&I2A,I1DCn,I1ACn,I2DCn,I2ACn,Pat[i]);
     
     for( j=0; j<NPat; j++ ) {
       
       if( j == i || !Pat[j]->ExistPattern ) continue;
       
-      Alias(&J1D,&J1A,&J2D,&J2A,&J1DCn,&J1ACn,&J2DCn,&J2ACn,Pat[j]);
+      Alias(&J1D,&J1A,&J2D,&J2A,J1DCn,J1ACn,J2DCn,J2ACn,Pat[j]);
       
       if( J1D == J2A && J2D == J1A && I1D != I2A && I2D != I1A &&
 	 ( (J1D == I1D && J1A == I1A) ||  (J1D == I1A && J1A == I1D) || 
 	   (J1D == I2A && J1A == I2D) ||  (J1D == I2D && J1A == I2A) ) ) continue;
 
       if( ( ( I1D < I2A || I2D < I1A ) && 
-	   ( (J1A <= I2A && J1A >= I1D && J2D <= I2A && J2D >= I1D && J2DCn == I1DCn &&
-	      J2A <= I1A && J2A >= I2D && J1D <= I1A && J1D >= I2D && J1DCn == I2DCn) ||
-	     (J2A <= I2A && J2A >= I1D && J1D <= I2A && J1D >= I1D && J1DCn == I1DCn &&
-	      J1A <= I1A && J1A >= I2D && J2D <= I1A && J2D >= I2D && J2DCn == I2DCn) ) ) || 
+	   ( (J1A <= I2A && J1A >= I1D && J2D <= I2A && J2D >= I1D && strcmp(J2DCn, I1DCn) &&
+	      J2A <= I1A && J2A >= I2D && J1D <= I1A && J1D >= I2D && strcmp(J1DCn, I2DCn)) ||
+	     (J2A <= I2A && J2A >= I1D && J1D <= I2A && J1D >= I1D && strcmp(J1DCn, I1DCn) &&
+	      J1A <= I1A && J1A >= I2D && J2D <= I1A && J2D >= I2D && strcmp(J2DCn, I2DCn)) ) ) || 
 	  ( ( I1D > I2A || I2D > I1A ) && 
-	   ( (J1A >= I2A && J1A <= I1D && J2D >= I2A && J2D <= I1D && J2DCn == I1DCn &&
-	      J2A >= I1A && J2A <= I2D && J1D >= I1A && J1D <= I2D && J1DCn == I2DCn) ||
-	     (J2A >= I2A && J2A <= I1D && J1D >= I2A && J1D <= I1D && J1DCn == I1DCn &&
-	      J1A >= I1A && J1A <= I2D && J2D >= I1A && J2D <= I2D && J2DCn == I2DCn) ) ) ) {
+	   ( (J1A >= I2A && J1A <= I1D && J2D >= I2A && J2D <= I1D && strcmp(J2DCn, I1DCn) &&
+	      J2A >= I1A && J2A <= I2D && J1D >= I1A && J1D <= I2D && strcmp(J1DCn, I2DCn)) ||
+	     (J2A >= I2A && J2A <= I1D && J1D >= I2A && J1D <= I1D && strcmp(J1DCn, I1DCn) &&
+	      J1A >= I1A && J1A <= I2D && J2D >= I1A && J2D <= I2D && strcmp(J2DCn, I2DCn)) ) ) ) {
 	Pat[j]->ExistPattern = NO;
       }
     }
@@ -415,32 +418,32 @@ void FilterPar(PATTERN **Pat, int NPat)
  
   register int i, j;
   int I1A, I1D, I2A, I2D, J1A, J1D, J2A, J2D;
-  char I1ACn, I1DCn, I2ACn, I2DCn, J1ACn, J1DCn, J2ACn, J2DCn;
+  char I1ACn[MAX_CHAINID], I1DCn[MAX_CHAINID], I2ACn[MAX_CHAINID], I2DCn[MAX_CHAINID], J1ACn[MAX_CHAINID], J1DCn[MAX_CHAINID], J2ACn[MAX_CHAINID], J2DCn[MAX_CHAINID];
 
   for( i=0; i<NPat; i++ ) {
     
     if( !Pat[i]->ExistPattern ) continue;
 
-    Alias(&I1D,&I1A,&I2D,&I2A,&I1DCn,&I1ACn,&I2DCn,&I2ACn,Pat[i]);
+    Alias(&I1D,&I1A,&I2D,&I2A,I1DCn,I1ACn,I2DCn,I2ACn,Pat[i]);
     
     for( j=0; j<NPat; j++ ) {
       
       if( j == i || !Pat[j]->ExistPattern ) continue;
       
-      Alias(&J1D,&J1A,&J2D,&J2A,&J1DCn,&J1ACn,&J2DCn,&J2ACn,Pat[j]);
+      Alias(&J1D,&J1A,&J2D,&J2A,J1DCn,J1ACn,J2DCn,J2ACn,Pat[j]);
       
       if( ( ( I1A >= I2D && I1D >= I2A ) && 
-	   ( (J1A >= I2A && J1A <= I1D && J2D >= I2A && J2D <= I1D && J2DCn == I1DCn &&
-	      J2A <= I1A && J2A >= I2D && J1D <= I1A && J1D >= I2D && J1DCn == I2DCn) ||
-	     (J2A >= I2A && J2A <= I1D && J1D >= I2A && J1D <= I1D && J1DCn == I1DCn &&
-	      J1A <= I1A && J1A >= I2D && J2D <= I1A && J2D >= I2D && J2DCn == I2DCn) ) ) || 
+	   ( (J1A >= I2A && J1A <= I1D && J2D >= I2A && J2D <= I1D && strcmp(J2DCn, I1DCn) &&
+	      J2A <= I1A && J2A >= I2D && J1D <= I1A && J1D >= I2D && strcmp(J1DCn, I2DCn)) ||
+	     (J2A >= I2A && J2A <= I1D && J1D >= I2A && J1D <= I1D && strcmp(J1DCn, I1DCn) &&
+	      J1A <= I1A && J1A >= I2D && J2D <= I1A && J2D >= I2D && strcmp(J2DCn, I2DCn)) ) ) || 
 
 	  ( I2A >= I1D && I2D >= I1A  && 
-	   ( (J1A <= I2A && J1A >= I1D && J2D <= I2A && J2D >= I1D && J2DCn == I1DCn &&
-	      J2A >= I1A && J2A <= I2D && J1D >= I1A && J1D <= I2D && J1DCn == I2DCn) ||
+	   ( (J1A <= I2A && J1A >= I1D && J2D <= I2A && J2D >= I1D && strcmp(J2DCn, I1DCn) &&
+	      J2A >= I1A && J2A <= I2D && J1D >= I1A && J1D <= I2D && strcmp(J1DCn, I2DCn)) ||
 
-	     (J2A <= I2A && J2A >= I1D && J1D <= I2A && J1D >= I1D && J1DCn == I1DCn &&
-	      J1A >= I1A && J1A <= I2D && J2D >= I1A && J2D <= I2D && J2DCn == I2DCn) ) ) ) {
+	     (J2A <= I2A && J2A >= I1D && J1D <= I2A && J1D >= I1D && strcmp(J1DCn, I1DCn) &&
+	      J1A >= I1A && J1A <= I2D && J2D >= I1A && J2D <= I2D && strcmp(J2DCn, I2DCn)) ) ) ) {
 	Pat[j]->ExistPattern = NO;
       }
     }
@@ -454,9 +457,14 @@ void Alias(int *D1,int *A1,int *D2,int *A2,char *D1Cn,char *A1Cn,char *D2Cn,char
     *A1 = Pat->Hb1->Acc->A_Res; 
     *D2 = Pat->Hb2->Dnr->D_Res;
     *A2 = Pat->Hb2->Acc->A_Res;
-    *D1Cn = Pat->Hb1->Dnr->Chain->Id;
-    *A1Cn = Pat->Hb1->Acc->Chain->Id;
-    *D2Cn = Pat->Hb2->Dnr->Chain->Id;
-    *A2Cn = Pat->Hb2->Acc->Chain->Id;
+    
+    strncpy(D1Cn, Pat->Hb1->Dnr->Chain->Id, MAX_CHAINID - 1);
+    D1Cn[MAX_CHAINID - 1] = '\0';
+    strncpy(A1Cn, Pat->Hb1->Acc->Chain->Id, MAX_CHAINID - 1);
+    A1Cn[MAX_CHAINID - 1] = '\0';
+    strncpy(D2Cn, Pat->Hb2->Dnr->Chain->Id, MAX_CHAINID - 1);
+    D2Cn[MAX_CHAINID - 1] = '\0';
+    strncpy(A2Cn, Pat->Hb2->Acc->Chain->Id, MAX_CHAINID - 1);
+    A2Cn[MAX_CHAINID - 1] = '\0';
 }		      
 

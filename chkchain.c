@@ -7,7 +7,7 @@ int CheckChain(CHAIN *Chain, COMMAND *Cmd)
   int i, j, AsnNumb=0, At, SuspCnt, Beg, End;
   float Content;
 
-  if( Cmd->NProcessed && !ChInStr(Cmd->Processed,SpaceToDash(Chain->Id)) ) {
+  if( Cmd->NProcessed && !ChInStr(Cmd->Processed,SpaceToDash(Chain->Id)[0]) ) {
     Chain->Valid = NO;
     return(FAILURE);
   }
