@@ -306,7 +306,6 @@ int ReadCIFFile(CHAIN **Chain, int *Cn, COMMAND *Cmd)
 
     *Cn = 0;
     
-    printf("%s:%d\n", __FILE__, __LINE__);
     if (!(cif = fopen(Cmd->InputFile, "r"))) {
         fprintf(stderr, "Failed to open CIF file: %s\n", Cmd->InputFile);
         return FAILURE;
@@ -323,7 +322,6 @@ int ReadCIFFile(CHAIN **Chain, int *Cn, COMMAND *Cmd)
     int idx_label_seq_id = -1, idx_Cartn_x = -1, idx_Cartn_y = -1, idx_Cartn_z = -1;
     int idx_occupancy = -1, idx_B_iso_or_equiv = -1, idx_label_alt_id = -1;
 
-    printf("%s:%d\n", __FILE__, __LINE__); 
     while (fgets(Buffer, BUFSZ, cif)) {
         // Remove trailing newline
         Buffer[strcspn(Buffer, "\n")] = '\0';
@@ -372,7 +370,6 @@ int ReadCIFFile(CHAIN **Chain, int *Cn, COMMAND *Cmd)
                     break;
                 }
             }
-            printf("%s:%d\n", __FILE__, __LINE__);
             if (in_atom_site_loop && num_fields > 0) {
                 // Map field names to indices
                 for (i = 0; i < num_fields; i++) {
@@ -492,7 +489,6 @@ int ReadCIFFile(CHAIN **Chain, int *Cn, COMMAND *Cmd)
     }
 
     fclose(cif);
-    printf("%s:%d\n", __FILE__, __LINE__);
     // Process the rest of the data and fill the Chain structures
     for (ChainCnt = 0; ChainCnt < *Cn; ChainCnt++) {
         c = Chain[ChainCnt];

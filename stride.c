@@ -13,8 +13,6 @@ int main(int argc, char **argv)
 
   /* argc = ccommand(&argv); */ /* For Macintosh only, see readme.mac */
 
-  printf("%s:%d\n", __FILE__, __LINE__);
-
 
   Chain = (CHAIN  **)ckalloc(MAX_CHAIN*sizeof(CHAIN *));
   HBond = (HBOND  **)ckalloc(MAXHYDRBOND*sizeof(HBOND *));
@@ -28,13 +26,11 @@ int main(int argc, char **argv)
       if (!ReadPDBFile(Chain, &NChain, Cmd) || !NChain)
           die("Error reading PDB file %s\n", Cmd->InputFile);
   } else if (ext && strcasecmp(ext, ".cif") == 0) {
-      printf("%s:%d\n", __FILE__, __LINE__);
       if (!ReadCIFFile(Chain, &NChain, Cmd) || !NChain)
           die("Error reading CIF file %s\n", Cmd->InputFile);
   } else {
       die("Unsupported file format %s\n", Cmd->InputFile);
   }
-  printf("%s:%d\n", __FILE__, __LINE__);
 
   for( Cn=0; Cn<NChain; Cn++ )
     ValidChain += CheckChain(Chain[Cn],Cmd);

@@ -302,13 +302,8 @@ int FindHydrogenBonds(CHAIN **Chain, int NChain, HBOND **HBond, COMMAND *Cmd)
   Acc = (ACCEPTOR **)ckalloc(MAXACCEPTOR*sizeof(ACCEPTOR *));
   
   for( cc=0; cc<NChain; cc++ ) { 
-    if (cc==316) {
-        fprintf(stderr, "%3d Chain_394_Resid0_NAtom: %d\n",cc, Chain[394]->Rsd[0]->NAtom);
-    } 
     FindDnr(Chain[cc],Dnr,&NDnr,Cmd); 
-    if (cc==316) fprintf(stderr, "%3d Chain_394_Resid0_NAtom: %d\n",cc, Chain[394]->Rsd[0]->NAtom);
     FindAcc(Chain[cc],Acc,&NAcc,Cmd);
-    if (cc==316) fprintf(stderr, "%3d Chain_394_Resid0_NAtom: %d\n",cc, Chain[394]->Rsd[0]->NAtom);
   }
 
   BondedDonor    = (BOOLEAN *)ckalloc(NDnr*sizeof(BOOLEAN));
