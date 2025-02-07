@@ -9,7 +9,7 @@ FILE *efopen(char *file, char *mode, char *progname);
 char **AllocAsn(CHAIN **Chain, int NChain);
 char **CharMatrix(int M, int N);
 char *OneToThree(char One);
-char *SpaceToDashChar(char Id);
+char SpaceToDashChar(char Id);
 char *SpaceToDash(char *Id);
 char *Tim(void);
 char ThreeToOne(char *Three);

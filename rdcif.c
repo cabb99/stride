@@ -191,7 +191,7 @@ int AddAtomToChain(CHAIN **Chain, int *Cn, char *atom_name, char alt_loc,
 
     // Update chain's NAtom
     c->NAtom++;
-
+    // printf("Debug: Chain ID=%s, Residue=%s, Residue number=%s, Atom=%s\n", c->Id, r->ResType, r->PDB_ResNumb, atom_name);
     return SUCCESS;
 }
 
@@ -556,5 +556,6 @@ int ReadCIFFile(CHAIN **Chain, int *Cn, COMMAND *Cmd)
     }
     for (i = 0; i < InfoCnt; i++)
         free(Info[i]);
+    
     return SUCCESS;
 }

@@ -63,7 +63,7 @@ int ReadDSSP(CHAIN **Chain, DSSP **Dssp, COMMAND *Cmd)
   ChainNumber++;
 
   for( i=0; i<ChainNumber; i++ ) 
-    Dssp[i]->Id = SpaceToDashChar(Dssp[i]->Id)[0];
+    Dssp[i]->Id = SpaceToDashChar(Dssp[i]->Id);
 
   return(ChainNumber);
 }

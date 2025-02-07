@@ -12,7 +12,9 @@ int FindDnr(CHAIN *Chain, DONOR **Dnr, int *NDnr, COMMAND *Cmd)
 
     strcpy(Rsd,Chain->Rsd[Res]->ResType);
 
-    DefineDnr(Chain,Dnr,&dc,Res,Nsp2,Peptide,1.90,0);
+    if (DefineDnr(Chain, Dnr, &dc, Res, Nsp2, Peptide, 1.90, 0) == FAILURE) {
+        
+    }
 
     if( !Cmd->SideChainHBond ) continue;
 
@@ -152,7 +154,9 @@ int FindAcc(CHAIN *Chain, ACCEPTOR **Acc, int *NAcc, COMMAND *Cmd)
   for( Res=0; Res<Chain->NRes; Res++ ) {
     strcpy(Rsd,Chain->Rsd[Res]->ResType);
 
-    DefineAcceptor(Chain,Acc,&ac,Res,Osp2,Peptide,1.60,0);
+    if (DefineAcceptor(Chain,Acc,&ac,Res,Osp2,Peptide,1.60,0) == FAILURE) {
+        // Optionally log that the donor was not defined.
+    }
 
     if( !Cmd->SideChainHBond ) continue;
 
@@ -298,8 +302,13 @@ int FindHydrogenBonds(CHAIN **Chain, int NChain, HBOND **HBond, COMMAND *Cmd)
   Acc = (ACCEPTOR **)ckalloc(MAXACCEPTOR*sizeof(ACCEPTOR *));
   
   for( cc=0; cc<NChain; cc++ ) { 
+    if (cc==316) {
+        fprintf(stderr, "%3d Chain_394_Resid0_NAtom: %d\n",cc, Chain[394]->Rsd[0]->NAtom);
+    } 
     FindDnr(Chain[cc],Dnr,&NDnr,Cmd); 
+    if (cc==316) fprintf(stderr, "%3d Chain_394_Resid0_NAtom: %d\n",cc, Chain[394]->Rsd[0]->NAtom);
     FindAcc(Chain[cc],Acc,&NAcc,Cmd);
+    if (cc==316) fprintf(stderr, "%3d Chain_394_Resid0_NAtom: %d\n",cc, Chain[394]->Rsd[0]->NAtom);
   }
 
   BondedDonor    = (BOOLEAN *)ckalloc(NDnr*sizeof(BOOLEAN));

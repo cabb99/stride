@@ -10,7 +10,7 @@ int Process_ATOM(BUFFER Buffer, CHAIN **Chain, int *ChainNumber,
   static char LastRes[MAX_CHAIN][RES_FIELD];
   RESIDUE *r;
   
-  if( Cmd->NActive && !ChInStr(Cmd->Active,SpaceToDashChar(Buffer[21])[0]) )
+  if( Cmd->NActive && !ChInStr(Cmd->Active,SpaceToDashChar(Buffer[21])))
      return(SUCCESS);
 
   if( Buffer[16] != 'A' && Buffer[16] != ' ' && Buffer[16] != '1' ) 

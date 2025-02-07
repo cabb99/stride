@@ -39,4 +39,3 @@ void InitChain(CHAIN **Chain)
 
   (*Chain)->Valid               = YES;
 }
-

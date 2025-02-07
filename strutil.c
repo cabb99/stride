@@ -157,18 +157,16 @@ char *Translate(char Code)
 
 }
 
-char *SpaceToDashChar(char Id) {
-    char temp[2];
-    temp[0] = Id; 
-    temp[1] = '\0'; 
-    return SpaceToDash(temp);
+char SpaceToDashChar(char Id) {
+    return (Id == ' ') ? '-' : Id;
 }
 
 char *SpaceToDash(char *Id) {
+    static char NewId[MAX_CHAINID];
     size_t len = strlen(Id);
-    char *NewId = malloc(len + 1); // exactly the needed size
-    if (!NewId) {
-        perror("Memory allocation failed");
+    if (len >= sizeof(MAX_CHAINID)) {
+        // handle error or truncate
+        fprintf(stderr, "SpaceToDash: string too long!\n");
         exit(1);
     }
 

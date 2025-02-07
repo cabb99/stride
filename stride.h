@@ -30,7 +30,7 @@
 #define MAX_ResType               50
 #define MAXNONSTAND               4.0
 #define MAX_CHAIN                 10000
-#define MAX_CHAINID               5  
+#define MAX_CHAINID               6  
 #define MAX_RES                   20000
 #define MAX_HETRES                20000
 #define MAX_HET                   200
@@ -63,9 +63,9 @@
 #define OUTPUTWIDTH               80
 #define MAXCONDITIONS             20
 
-#define MAXHYDRBOND               50000
-#define MAXDONOR                  MAX_RES
-#define MAXACCEPTOR               MAX_RES
+#define MAXHYDRBOND               500000
+#define MAXDONOR                  200000
+#define MAXACCEPTOR               200000
 
 #define	MINPHIPSI     	         -180.0
 #define MAXPHIPSI      	          180.0
