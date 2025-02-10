@@ -39,6 +39,7 @@ void parseOldChainList(const char *chainSpec, char ***chainList, int *nChains) {
 
 int main(int argc, char **argv)
 {
+
   CHAIN **Chain;
   HBOND **HBond;
   COMMAND *Cmd;
@@ -47,6 +48,7 @@ int main(int argc, char **argv)
   register int i;
 
   /* argc = ccommand(&argv); */ /* For Macintosh only, see readme.mac */
+
 
 
   Chain = (CHAIN  **)ckalloc(MAX_CHAIN*sizeof(CHAIN *));
@@ -306,11 +308,12 @@ fprintf(stderr,"\nAction: secondary structure assignment\n");
   fprintf(stderr,"  -mFile           MolScript file\n");
   fprintf(stderr,"  -o               Report secondary structure summary Only\n");
   fprintf(stderr,"  -h               Report Hydrogen bonds\n");
-  fprintf(stderr,"  -rId1Id2..      Read only chains (each letter is one chain; backward compatibility)\n");
-  fprintf(stderr,"  -r:Id1,Id2,..   Read only chains (multi–letter IDs allowed, comma–separated)\n");
-  fprintf(stderr,"  -cId1Id2..      Process only chains (each letter is one chain; backward compatibility)\n");
-  fprintf(stderr,"  -c:Id1,Id2,..   Process only chains (multi–letter IDs allowed, comma–separated)\n");
+  fprintf(stderr,"  -rId1Id2..      Read only chains Id1, Id2, ... (each letter is one chain; backward compatibility)\n");
+  fprintf(stderr,"  -r:Id1,Id2,..   Read only chains Id1, Id2, ...(multi–letter IDs allowed, comma–separated)\n");
+  fprintf(stderr,"  -cId1Id2..      Process only chains Id1, Id2, ... (each letter is one chain; backward compatibility)\n");
+  fprintf(stderr,"  -c:Id1,Id2,..   Process only chains Id1, Id2, ... (multi–letter IDs allowed, comma–separated)\n");
   fprintf(stderr,"  -q[File]        Generate SeQuence file in FASTA format and die\n");
+  fprintf(stderr,"\nOptions are position  and case insensitive\n");
 
   /*************** Private options - not for general use ****************/
   if( Cmd->Info ) {

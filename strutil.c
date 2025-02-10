@@ -46,11 +46,10 @@ int FindAtom(CHAIN *Chain, int ResNumb, char *Atom, int *AtNumb)
   }
 
   for( (*AtNumb)=0; (*AtNumb)<Chain->Rsd[ResNumb]->NAtom; (*AtNumb)++ )
-    if( !strcmp(Atom,Chain->Rsd[ResNumb]->AtomType[(*AtNumb)]) ){
+    if( !strcmp(Atom,Chain->Rsd[ResNumb]->AtomType[(*AtNumb)]) )
        return(SUCCESS);
-    }
-  *AtNumb = ERR;
 
+  *AtNumb = ERR;
   return(FAILURE);
 }
 
@@ -104,11 +103,11 @@ int FindChain(CHAIN **Chain, int NChain, char *ChainId)
 {
   register int i;
   
-  for (int i = 0; i < NChain; i++)
-    if (strcmp(Chain[i]->Id, ChainId) == 0) 
-      return i;
+  for( i=0; i<NChain; i++ )
+    if( strcmp(Chain[i]->Id, ChainId) == 0 ) 
+      return(i);
 
-  return ERR;
+  return(ERR);
 }
 
 BOOLEAN IsHydrogen(char *AtomName) 
@@ -157,8 +156,16 @@ char *Translate(char Code)
 
 }
 
-char SpaceToDashChar(char Id) {
-    return (Id == ' ') ? '-' : Id;
+char SpaceToDashChar(char Id)
+{
+  static char NewId;
+
+  if( Id == ' ' )
+    NewId = '-';
+  else
+    NewId = Id;
+
+  return(NewId);
 }
 
 char *SpaceToDash(char *Id) {
@@ -177,7 +184,6 @@ char *SpaceToDash(char *Id) {
 
     return NewId;
 }
-
 
 BOOLEAN ChInStr(char *String, char Char)
 {
