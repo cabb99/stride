@@ -34,7 +34,7 @@ For a list of options, run:
 
 ## Changelog
 
-For a detailed summary of modifications, please see the [CHANGES](CHANGES) file included in this repository.
+For a detailed summary of modifications, please see the [CHANGES](CHANGES.md) file included in this repository.
 
 ---
 
