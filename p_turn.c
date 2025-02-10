@@ -6,7 +6,8 @@ int Process_TURN(BUFFER Buffer, CHAIN **Chain, int *ChainNumber, COMMAND *Cmd)
   char *Field[MAX_FIELD];
   BUFFER Tmp;
 
-  if( Cmd->NActive && !ChInStr(Cmd->Active,SpaceToDashChar(Buffer[19])) )
+  char chainIDStr[2] = { SpaceToDashChar(Buffer[19]), '\0' };
+  if( Cmd->NActive && !ChainInList(chainIDStr, Cmd->activeChains, Cmd->NActive))
      return(SUCCESS);
 
   for( CC=0; CC < *ChainNumber && Chain[CC]->Id[0] != Buffer[19]; CC++ );

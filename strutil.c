@@ -189,6 +189,16 @@ BOOLEAN ChInStr(char *String, char Char)
   
   return(NO);
 }
+
+BOOLEAN ChainInList(char *chainID, char **chainList, int nChains)
+{
+  int i;
+  for (i = 0; i < nChains; i++) {
+    if (strcasecmp(chainID, chainList[i]) == 0)
+      return YES;
+  }
+  return NO;
+}
     
 void ExtractAsn(CHAIN **Chain, int Cn, char *Asn)
 {

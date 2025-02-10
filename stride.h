@@ -243,14 +243,20 @@ typedef struct {
 	       } ACCEPTOR;
 
 typedef struct { 
-                 BUFFER InputFile, OutFile, SeqFile;
+         BUFFER InputFile, OutFile, SeqFile;
 		 BUFFER MapFileHelix, MapFileSheet;
 		 BUFFER MolScriptFile, DsspFile;
-		 char EnergyType, Active[MAX_CHAIN+1]; 
-		 char Processed[MAX_CHAIN+1], Cond[MAXCONDITIONS];
-                 char FirstResidue[RES_FIELD], LastResidue[RES_FIELD];
+		 char EnergyType;
+		 char Cond[MAXCONDITIONS];
 
-                 int NPixel, NActive, NProcessed;
+         char **activeChains;
+         int NActive;
+         char **processedChains;
+         int NProcessed;
+
+         char FirstResidue[RES_FIELD], LastResidue[RES_FIELD];
+
+         int NPixel;
 		 int MinLength, MaxLength;
 
 		 float PhiPsiStep, DistCutOff;

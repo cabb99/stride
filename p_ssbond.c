@@ -6,7 +6,8 @@ int Process_SSBOND(BUFFER Buffer, CHAIN **Chain, int *ChainNumber, COMMAND *Cmd)
   char *Field[MAX_FIELD];
   BUFFER Tmp;
 
-  if( Cmd->NActive && !ChInStr(Cmd->Active,SpaceToDashChar(Buffer[15])) )
+  char chainIDStr[2] = { SpaceToDashChar(Buffer[15]), '\0' };
+  if( Cmd->NActive && !ChainInList(chainIDStr, Cmd->activeChains, Cmd->NActive))
      return(SUCCESS);
 
   CC = 0;

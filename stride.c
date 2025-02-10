@@ -2,6 +2,41 @@
 
 /* #include <console.h> */  /* For Macintosh only, see readme.mac */
 
+void parseChainList(const char *chainSpec, char ***chainList, int *nChains) {
+  char *specCopy = strdup(chainSpec);
+  int count = 0;
+  char *token = strtok(specCopy, ",");
+  while(token) {
+    count++;
+    token = strtok(NULL, ",");
+  }
+  free(specCopy);
+
+  *chainList = (char **) malloc(count * sizeof(char *));
+  *nChains = count;
+
+  specCopy = strdup(chainSpec);
+  int i = 0;
+  token = strtok(specCopy, ",");
+  while(token) {
+    (*chainList)[i] = strdup(token);
+    i++;
+    token = strtok(NULL, ",");
+  }
+  free(specCopy);
+}
+
+void parseOldChainList(const char *chainSpec, char ***chainList, int *nChains) {
+  int len = (int)strlen(chainSpec);
+  *chainList = (char **) malloc(len * sizeof(char *));
+  *nChains = len;
+  for (int i = 0; i < len; i++) {
+    (*chainList)[i] = (char *) malloc(2); // one character plus the null terminator
+    (*chainList)[i][0] = chainSpec[i];
+    (*chainList)[i][1] = '\0';
+  }
+}
+
 int main(int argc, char **argv)
 {
   CHAIN **Chain;
@@ -111,7 +146,7 @@ int main(int argc, char **argv)
 
 void ProcessStrideOptions(char **List, int ListLength, COMMAND *Cmd)
 {
-  
+
   int i, InpFile = 0;
   char OPTION;
   BOOLEAN Password = NO;
@@ -125,6 +160,11 @@ void ProcessStrideOptions(char **List, int ListLength, COMMAND *Cmd)
 
   Password = Specified(List,ListLength,'$');
 
+  Cmd->activeChains = NULL;
+  Cmd->NActive = 0;
+  Cmd->processedChains = NULL;
+  Cmd->NProcessed = 0;
+
   for( i=1; i<ListLength; i++ ) {
     if( *List[i] == '-' ) {
       
@@ -132,17 +172,34 @@ void ProcessStrideOptions(char **List, int ListLength, COMMAND *Cmd)
 
       /*********************** Process public options ************************/
       if(OPTION == 'M') {
-	strcpy(Cmd->MolScriptFile,List[i]+2); 
-	Cmd->MolScript = YES;
+        strcpy(Cmd->MolScriptFile,List[i]+2); 
+        Cmd->MolScript = YES;
       }
       else if( OPTION == 'O' ) Cmd->ReportSummaryOnly = YES;
       else if( OPTION == 'H' ) Cmd->ReportBonds = YES;
-      else if( OPTION == 'R' ) strcpy(Cmd->Active,List[i]+2);
-      else if( OPTION == 'C' ) strcpy(Cmd->Processed,List[i]+2);
+      else if( OPTION == 'R' ) {
+        /* If the argument begins with a colon, use the new comma–separated syntax.
+           For example:  -r:ABC,DEF  will select chains "ABC" and "DEF". */
+        if ( *(List[i]+2) == ':' ) {
+          parseChainList( List[i]+3, &(Cmd->activeChains), &(Cmd->NActive) );
+        }
+        else {
+          /* Backwards compatibility: e.g., -rAB is taken as chain 'A' and chain 'B' */
+          parseOldChainList( List[i]+2, &(Cmd->activeChains), &(Cmd->NActive) );
+        }
+      }
+      else if( OPTION == 'C' ) {
+        if ( *(List[i]+2) == ':' ) {
+          parseChainList( List[i]+3, &(Cmd->processedChains), &(Cmd->NProcessed) );
+        }
+        else {
+          parseOldChainList( List[i]+2, &(Cmd->processedChains), &(Cmd->NProcessed) );
+        }
+      }
       else if( OPTION == 'F' ) strcpy(Cmd->OutFile,List[i]+2);
       else if( OPTION == 'Q' ) {
-	strcpy(Cmd->SeqFile,List[i]+2);
-	Cmd->OutSeq = YES;
+        strcpy(Cmd->SeqFile,List[i]+2);
+        Cmd->OutSeq = YES;
       }
       /*********************** Process private options ************************/
       else if( OPTION == 'I' && Password ) Cmd->Info = YES;
@@ -213,7 +270,7 @@ void ProcessStrideOptions(char **List, int ListLength, COMMAND *Cmd)
       }
       else
 	if( OPTION != '$' )
-	  PrintStrideHelp(Cmd);
+        PrintStrideHelp(Cmd);
     }
     else {
       strcpy(Cmd->InputFile,List[i]);
@@ -231,8 +288,6 @@ void ProcessStrideOptions(char **List, int ListLength, COMMAND *Cmd)
     PrintStrideHelp(Cmd); 
   }
 
-  Cmd->NActive = (int)strlen(Cmd->Active);
-  Cmd->NProcessed = (int)strlen(Cmd->Processed);
 
   if( Cmd->Measure ) {
     Cmd->BrookhavenAsn = YES;
@@ -244,17 +299,18 @@ void ProcessStrideOptions(char **List, int ListLength, COMMAND *Cmd)
 void PrintStrideHelp(COMMAND *Cmd)
 {
 
-  fprintf(stderr,"\nAction: secondary structure assignment\n");
+fprintf(stderr,"\nAction: secondary structure assignment\n");
   fprintf(stderr,"Usage: stride [Options] InputFile [ > file ]\n");
   fprintf(stderr,"Options:  \n");
-  fprintf(stderr,"  -fFile      Output file\n");
-  fprintf(stderr,"  -mFile      MolScript file\n");
-  fprintf(stderr,"  -o          Report secondary structure summary Only\n");
-  fprintf(stderr,"  -h          Report Hydrogen bonds\n");
-  fprintf(stderr,"  -rId1Id2..  Read only chains Id1, Id2 ...\n");
-  fprintf(stderr,"  -cId1Id2..  Process only Chains Id1, Id2 ...\n");
-  fprintf(stderr,"  -q[File]    Generate SeQuence file in FASTA format and die\n");
-  fprintf(stderr,"\nOptions are position  and case insensitive\n");
+  fprintf(stderr,"  -fFile           Output file\n");
+  fprintf(stderr,"  -mFile           MolScript file\n");
+  fprintf(stderr,"  -o               Report secondary structure summary Only\n");
+  fprintf(stderr,"  -h               Report Hydrogen bonds\n");
+  fprintf(stderr,"  -rId1Id2..      Read only chains (each letter is one chain; backward compatibility)\n");
+  fprintf(stderr,"  -r:Id1,Id2,..   Read only chains (multi–letter IDs allowed, comma–separated)\n");
+  fprintf(stderr,"  -cId1Id2..      Process only chains (each letter is one chain; backward compatibility)\n");
+  fprintf(stderr,"  -c:Id1,Id2,..   Process only chains (multi–letter IDs allowed, comma–separated)\n");
+  fprintf(stderr,"  -q[File]        Generate SeQuence file in FASTA format and die\n");
 
   /*************** Private options - not for general use ****************/
   if( Cmd->Info ) {
@@ -342,8 +398,6 @@ void DefaultCmd(COMMAND *Cmd)
   strcpy(Cmd->MapFileHelix,""); 
   strcpy(Cmd->MapFileSheet,""); 
   strcpy(Cmd->OutFile,"");
-  strcpy(Cmd->Active,"");
-  strcpy(Cmd->Processed,"");
   strcpy(Cmd->Cond,"");
 
 

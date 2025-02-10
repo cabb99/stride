@@ -6,8 +6,8 @@ int Process_SHEET(BUFFER Buffer, CHAIN **Chain, int *ChainNumber, COMMAND *Cmd)
   char *Field[MAX_FIELD];
   BUFFER Tmp;
   static char PreviousChain, PreviousSheetId[RES_FIELD];
-
-  if( Cmd->NActive && !ChInStr(Cmd->Active,SpaceToDashChar(Buffer[21])) )
+  char chainIDStr[2] = { SpaceToDashChar(Buffer[21]), '\0' };
+  if( Cmd->NActive && !ChainInList(chainIDStr, Cmd->activeChains, Cmd->NActive))
      return(SUCCESS);
 
   for( CC=0; CC < *ChainNumber && Chain[CC]->Id[0] != Buffer[21]; CC++ );

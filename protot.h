@@ -1,4 +1,5 @@
 BOOLEAN ChInStr(char *String, char Char);
+BOOLEAN ChainInList(char *ChainId, char **ChainList, int nChains);
 BOOLEAN ExistsSecStr(CHAIN **Chain, int NChain);
 BOOLEAN ExistSSBond(CHAIN **Chain,int NChain,int Cn1,int Cn2,char *Res1,char *Res2);
 BOOLEAN IsHydrogen(char *AtomName) ;
