@@ -1,6 +1,6 @@
 # Modified STRIDE with CIF Support
 
-This repository contains a modified version of the STRIDE program, originally developed by Dmitrij Frishman and Patrick Argos at the European Molecular Biology Laboratory (EMBL) in Heidelberg, Germany. In this version, the code has been modified to support reading and processing mmCIF files in addition to the standard PDB format.
+This repository contains a modified version of the STRIDE program, originally developed by Dmitrij Frishman and Patrick Argos at the European Molecular Biology Laboratory (EMBL) in Heidelberg, Germany, for secondary structure prediction of protein structures. In this version, the code has been modified to support reading and processing mmCIF files in addition to the standard PDB format.
 
 ## Installation
 
